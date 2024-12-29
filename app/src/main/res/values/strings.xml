@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ProjektApp</string>
+    <string name="restaurants">Restaurants</string>
+    <string name="map">Map</string>
 </resources>
