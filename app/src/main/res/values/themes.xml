@@ -11,9 +11,11 @@
         <item name="colorOnSurface">@color/black</item>
         <item name="colorSurfaceVariant">@color/light_red</item>
         <item name="colorOnSurfaceVariant">@color/gray</item>
-        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowBackground">@color/light_gray_1</item>
         <item name="cardBackgroundColor">@color/white</item>
         <item name="bottomNavigationStyle">@style/BottomNavigationBarStyle</item>
+
+        <item name="android:fontFamily">@font/mona_sans</item>
     </style>
 
     <style name="Theme.ProjektApp" parent="Base.Theme.ProjektApp" />

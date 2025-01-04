@@ -1,13 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="BottomNavigationBarItemStyle" parent="Widget.Material3.BottomNavigationView">
+        <item name="android:fontFamily">@font/mona_sans</item>
+    </style>
+
+    <style name="BottomNavigationBarItemSelectedStyle" parent="Widget.Material3.BottomNavigationView">
+        <item name="android:fontFamily">@font/mona_sans_medium</item>
+    </style>
 
     <style name="BottomNavigationBarStyle" parent="Widget.Material3.BottomNavigationView">
+        <item name="itemTextAppearanceActive">@style/BottomNavigationBarItemSelectedStyle</item>
+        <item name="itemTextAppearanceInactive">@style/BottomNavigationBarItemStyle</item>
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
     </style>
 
     <style name="ThemeOverlay.App.BottomNavigationView" parent="">
         <item name="colorSurface">?attr/colorOnSurface</item>
         <item name="colorOnSurfaceVariant">?attr/colorTertiary</item>
+    </style>
+
+    <style name="RestaurantCardNameStyle">
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:textSize">@dimen/text_large</item>
+        <item name="android:fontFamily">@font/soliden</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="RestaurantCardTextStyle">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textSize">@dimen/text_medium</item>
     </style>
 
 </resources>

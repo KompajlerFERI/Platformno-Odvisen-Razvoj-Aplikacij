@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cvComponentLine"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="@dimen/card_elevation"
+    app:cardCornerRadius="8dp"
+    app:cardBackgroundColor="?attr/cardBackgroundColor">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="96dp">
+
+        <ImageView
+            android:id="@+id/ivRestaurantPhoto"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:contentDescription="@string/restaurant_photo_description"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:tint="?attr/colorSecondary"/>
+
+        <TextView
+            android:id="@+id/tvRestaurantName"
+            style="@style/RestaurantCardNameStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivRestaurantPhoto"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small"/>
+
+        <TextView
+            android:id="@+id/tvMealPrice"
+            style="@style/RestaurantCardTextStyle"
+            android:text="@string/meal_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constraintTop_toBottomOf="@id/tvRestaurantName"
+            app:layout_constraintStart_toEndOf="@+id/ivRestaurantPhoto"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small"/>
+
+        <TextView
+            android:id="@+id/tvMealSurcharge"
+            style="@style/RestaurantCardTextStyle"
+            android:text="@string/meal_surcharge"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constraintTop_toBottomOf="@id/tvMealPrice"
+            app:layout_constraintStart_toEndOf="@+id/ivRestaurantPhoto"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small"/>
+
+        <ImageView
+            android:id="@+id/ivRestaurantCapacity"
+            android:src="@drawable/ic_group_of_people"
+            android:layout_width="0dp"
+            android:layout_height="20dp"
+            android:contentDescription="@string/restaurant_capacity_description"
+            app:layout_constraintTop_toTopOf="@+id/tvRestaurantCapacity"
+            app:layout_constraintBottom_toBottomOf="@+id/tvRestaurantCapacity"
+            app:layout_constraintEnd_toStartOf="@+id/tvRestaurantCapacity"
+            app:layout_constraintDimensionRatio="1:1"
+            app:tint="?attr/colorPrimary"
+            android:layout_marginEnd="@dimen/margin_small" />
+
+        <TextView
+            android:id="@+id/tvRestaurantCapacity"
+            style="@style/RestaurantCardTextStyle"
+            android:text="@string/restaurant_capacity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_small"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

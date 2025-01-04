@@ -2,4 +2,11 @@
     <string name="app_name">ProjektApp</string>
     <string name="restaurants">Restaurants</string>
     <string name="map">Map</string>
+
+    <string name="meal_price">meal price: %.2f€</string>
+    <string name="meal_surcharge">meal surcharge: %.2f€</string>
+    <string name="restaurant_capacity">%d/%d</string>
+
+    <string name="restaurant_photo_description">Photo of the restaurant or it\'s food</string>
+    <string name="restaurant_capacity_description">Last recorded number of people in restaurant</string>
 </resources>

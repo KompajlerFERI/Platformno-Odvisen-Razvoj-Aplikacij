@@ -3,5 +3,10 @@
     <font
         android:fontStyle="normal"
         android:fontWeight="400"
-        android:font="@font/mona_sans_sloveene" />
+        android:font="@font/mona_sans_regular" />
+
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="500"
+        android:font="@font/mona_sans_medium" />
 </font-family>
