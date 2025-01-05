@@ -7,4 +7,6 @@
     <color name="dark_red">#FF83002A</color>
     <color name="gray">#FF8D929A</color>
     <color name="black">#FF000000</color>
+
+    <color name="transparent">#00000000</color>
 </resources>
