@@ -3,6 +3,7 @@
     <string name="restaurants">Restaurants</string>
     <string name="map">Map</string>
 
+    <string name="restaurant_name">Restaurant name</string>
     <string name="meal_price">meal price: %.2f€</string>
     <string name="meal_surcharge">meal surcharge: %.2f€</string>
     <string name="restaurant_capacity">%d/%d</string>

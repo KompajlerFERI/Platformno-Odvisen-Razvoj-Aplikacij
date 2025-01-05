@@ -27,6 +27,7 @@
         <TextView
             android:id="@+id/tvRestaurantName"
             style="@style/RestaurantCardNameStyle"
+            android:text="@string/restaurant_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ellipsize="end"
