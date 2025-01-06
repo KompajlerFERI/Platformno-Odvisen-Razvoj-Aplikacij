@@ -76,4 +76,11 @@ dependencies {
 
     // S W I P E   T O   R E F R E S H
     implementation(libs.androidx.swiperefreshlayout)
+
+    // G L I D E
+    implementation (libs.glide)
+    annotationProcessor (libs.compiler)
+
+    // S H I M M E R
+    implementation (libs.shimmer)
 }
