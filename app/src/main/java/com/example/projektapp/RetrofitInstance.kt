@@ -2,6 +2,8 @@ package com.example.projektapp
 
 import com.example.lib.Location
 import com.example.lib.LocationDeserializer
+import com.example.lib.Photo
+import com.example.lib.PhotoDeserializer
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
@@ -12,6 +14,7 @@ object RetrofitInstance {
 
     private val gson: Gson = GsonBuilder()
         .registerTypeAdapter(Location::class.java, LocationDeserializer())
+        .registerTypeAdapter(Photo::class.java, PhotoDeserializer())
         .create()
 
     val api: APIInterface by lazy {
