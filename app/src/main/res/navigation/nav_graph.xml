@@ -13,8 +13,8 @@
 
     <fragment
         android:id="@+id/mapFragment"
-        android:name="com.example.projektapp.MapFragment"
+        android:name="com.example.projektapp.MapsFragment"
         android:label="fragment_map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_maps" />
 
 </navigation>
