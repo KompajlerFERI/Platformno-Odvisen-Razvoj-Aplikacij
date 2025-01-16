@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.findNavController
 import com.example.projektapp.databinding.FragmentDialogBinding
 
 class PopUpWindowFragment : DialogFragment() {
@@ -25,9 +26,18 @@ class PopUpWindowFragment : DialogFragment() {
 
         // Retrieve the restaurant name from arguments
         val restaurantName = arguments?.getString("restaurantName")
+        println(arguments)
 
         // Set the restaurant name to the TextView
         binding.restaurantName.text = restaurantName
+
+        binding.btnCamera.setOnClickListener {
+            findNavController().navigate(R.id.action_restaurantsFragment_to_cameraFragment)
+        }
+
+        binding.btnSimulateData.setOnClickListener {
+            findNavController().navigate(R.id.action_restaurantsFragment_to_dataSimulatorFragment)
+        }
     }
 
     override fun onStart() {

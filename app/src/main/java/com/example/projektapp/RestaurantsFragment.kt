@@ -73,6 +73,7 @@ class RestaurantsFragment : Fragment() {
 
         val bundle = Bundle()
         bundle.putString("restaurantName", restaurant.name)
+        bundle.putString("restaurantId", restaurant.id)
         dialogFragment.arguments = bundle
 
         dialogFragment.show(childFragmentManager, "PopUpWindowFragment")
