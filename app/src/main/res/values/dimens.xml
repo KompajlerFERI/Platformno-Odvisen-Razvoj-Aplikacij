@@ -14,4 +14,7 @@
     <dimen name="text_button">16sp</dimen>
 
     <dimen name="card_elevation">6dp</dimen>
+
+    <dimen name="popup_width">300dp</dimen>
+    <dimen name="popup_height">500dp</dimen>
 </resources>
