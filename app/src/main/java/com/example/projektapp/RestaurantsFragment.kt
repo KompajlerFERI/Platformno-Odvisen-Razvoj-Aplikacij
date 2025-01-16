@@ -41,33 +41,42 @@ class RestaurantsFragment : Fragment() {
         restaurants = listOf()
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        // I N I T I A L   D A T A   F E T C H
         viewLifecycleOwner.lifecycleScope.launch {
             showLoading(true)
             val response = fetchRestaurants()
             if (response != null) {
                 restaurants = response
-                binding.recyclerView.adapter = RestaurantAdapter(restaurants)
+                binding.recyclerView.adapter = RestaurantAdapter(restaurants) { restaurant ->
+                    showPopUpWindow(restaurant)
+                }
             }
             showLoading(false)
         }
-
-        val typedValue = TypedValue()
-        val theme = requireContext().theme
-        theme.resolveAttribute(androidx.appcompat.R.attr.colorPrimary, typedValue, true)
-        binding.swipeRefreshLayout.setColorSchemeResources(typedValue.resourceId)
 
         binding.swipeRefreshLayout.setOnRefreshListener {
             viewLifecycleOwner.lifecycleScope.launch {
                 val response = fetchRestaurants()
                 if (response != null) {
                     restaurants = response
-                    binding.recyclerView.adapter = RestaurantAdapter(restaurants)
+                    binding.recyclerView.adapter = RestaurantAdapter(restaurants) { restaurant ->
+                        showPopUpWindow(restaurant)
+                    }
                     binding.recyclerView.scrollToPosition(0)
                 }
                 binding.swipeRefreshLayout.isRefreshing = false
             }
         }
+    }
+
+    private fun showPopUpWindow(restaurant: Restaurant) {
+        val dialogFragment = PopUpWindowFragment()
+
+        val bundle = Bundle()
+        bundle.putString("restaurantName", restaurant.name)
+        bundle.putString("restaurantId", restaurant.id)
+        dialogFragment.arguments = bundle
+
+        dialogFragment.show(childFragmentManager, "PopUpWindowFragment")
     }
 
     private suspend fun fetchRestaurants(): List<Restaurant>? {
