@@ -100,4 +100,16 @@ dependencies {
 
     // S H I M M E R
     implementation (libs.shimmer)
+
+    // R E T R O F I T
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+
+    // S C A L A R S   C O N V E R T E R
+    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
+
+    // O K H T T P -> temporary, menjamo za M Q T T
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+
+    // L O G G I N G   I N T E R C E P T O R
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
 }

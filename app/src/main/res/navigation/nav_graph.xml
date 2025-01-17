@@ -9,12 +9,37 @@
         android:id="@+id/restaurantsFragment"
         android:name="com.example.projektapp.RestaurantsFragment"
         android:label="fragment_restaurants"
-        tools:layout="@layout/fragment_restaurants" />
+        tools:layout="@layout/fragment_restaurants" >
+        <action
+            android:id="@+id/action_restaurantsFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_restaurantsFragment_to_dataSimulatorFragment"
+            app:destination="@id/dataSimulatorFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.example.projektapp.MapsFragment"
         android:label="fragment_map"
-        tools:layout="@layout/fragment_maps" />
 
+        tools:layout="@layout/fragment_maps" />
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.example.projektapp.CameraFragment"
+        android:label="fragment_camera"
+        tools:layout="@layout/fragment_camera" />
+    <dialog
+        android:id="@+id/popUpWindowFragment"
+        android:name="com.example.projektapp.PopUpWindowFragment"
+        android:label="PopUpWindowFragment" />
+    <fragment
+        android:id="@+id/dataSimulatorFragment"
+        android:name="com.example.projektapp.DataSimulatorFragment"
+        android:label="fragment_simulate_data"
+        tools:layout="@layout/fragment_simulate_data" >
+        <action
+            android:id="@+id/action_dataSimulatorFragment_to_restaurantsFragment"
+            app:destination="@id/restaurantsFragment" />
+    </fragment>
 </navigation>
