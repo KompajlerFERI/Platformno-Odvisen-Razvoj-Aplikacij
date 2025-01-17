@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import com.example.projektapp.databinding.FragmentMapsBinding
 
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
@@ -19,19 +18,26 @@ class MapsFragment : Fragment() {
     private var _binding: FragmentMapsBinding? = null
     private val binding get() = _binding!!
 
+    private val application: MyApplication
+        get() = requireActivity().application as MyApplication
+
     private val callback = OnMapReadyCallback { googleMap ->
         /**
          * Manipulates the map once available.
          * This callback is triggered when the map is ready to be used.
          * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
+         * In this case, we get positioned at Maribor, Slovenia.
          * If Google Play services is not installed on the device, the user will be prompted to
          * install it inside the SupportMapFragment. This method will only be triggered once the
          * user has installed Google Play services and returned to the app.
          */
-        val sydney = LatLng(-34.0, 151.0)
-        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        application.restaurants.forEach { restaurant ->
+            val position = LatLng(restaurant.location.latitude, restaurant.location.longitude)
+            googleMap.addMarker(MarkerOptions().position(position).title(restaurant.name))
+        }
+
+        val maribor = LatLng(46.5547, 15.6459)
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(maribor, 12f))
     }
 
     override fun onCreateView(

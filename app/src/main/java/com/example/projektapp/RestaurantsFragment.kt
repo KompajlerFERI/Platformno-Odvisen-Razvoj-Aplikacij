@@ -25,7 +25,8 @@ class RestaurantsFragment : Fragment() {
     private var _binding: FragmentRestaurantsBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var restaurants: List<Restaurant>
+    private val application: MyApplication
+        get() = requireActivity().application as MyApplication
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,16 +39,16 @@ class RestaurantsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        restaurants = listOf()
+        application.restaurants = listOf()
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         // I N I T I A L   D A T A   F E T C H
         viewLifecycleOwner.lifecycleScope.launch {
             showLoading(true)
-            val response = fetchRestaurants()
+            val response = application.fetchRestaurants(requireContext())
             if (response != null) {
-                restaurants = response
-                binding.recyclerView.adapter = RestaurantAdapter(restaurants)
+                application.restaurants = response
+                binding.recyclerView.adapter = RestaurantAdapter(application.restaurants)
             }
             showLoading(false)
         }
@@ -59,42 +60,14 @@ class RestaurantsFragment : Fragment() {
 
         binding.swipeRefreshLayout.setOnRefreshListener {
             viewLifecycleOwner.lifecycleScope.launch {
-                val response = fetchRestaurants()
+                val response = application.fetchRestaurants(requireContext())
                 if (response != null) {
-                    restaurants = response
-                    binding.recyclerView.adapter = RestaurantAdapter(restaurants)
+                    application.restaurants = response
+                    binding.recyclerView.adapter = RestaurantAdapter(application.restaurants)
                     binding.recyclerView.scrollToPosition(0)
                 }
                 binding.swipeRefreshLayout.isRefreshing = false
             }
-        }
-    }
-
-    private suspend fun fetchRestaurants(): List<Restaurant>? {
-        return withContext(Dispatchers.IO) {
-            try {
-                val response = RetrofitInstance.api.getRestaurants()
-                if (response.isSuccessful) {
-                    Timber.i("Fetched: ${response.body()}")
-                    response.body()
-                } else {
-                    handleError("HTTP Error: ${response.message()}")
-                    null
-                }
-            } catch (e: IOException) {
-                handleError("Error: ${e.message}")
-                null
-            } catch (e: HttpException) {
-                handleError("HTTP Error: ${e.message}")
-                null
-            }
-        }
-    }
-
-    private suspend fun handleError(message: String) {
-        withContext(Dispatchers.Main) {
-            Timber.e(message)
-            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
         }
     }
 
