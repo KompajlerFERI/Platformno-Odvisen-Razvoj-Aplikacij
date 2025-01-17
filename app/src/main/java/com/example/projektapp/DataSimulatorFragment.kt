@@ -31,6 +31,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.http.Body
 import java.io.File
 import java.io.FileOutputStream
+import kotlin.math.ceil
 
 interface AzureApiService {
     @POST("PeopleRecognizer")
@@ -106,9 +107,14 @@ class DataSimulatorFragment : Fragment() {
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    val responseBody = response.body()?.string()
-                    binding.lblPredictedAmount.text = "Predicted Amount: $responseBody"
-                    Toast.makeText(context, "Received response: $responseBody", Toast.LENGTH_LONG).show()
+                    val responseBody = response.body()?.string()?.toDoubleOrNull()
+                    if (responseBody != null) {
+                        val roundedValue = ceil(responseBody).toInt()
+                        binding.lblPredictedAmount.text = "Predicted Amount: $roundedValue"
+                        Toast.makeText(context, "Received response: $roundedValue", Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast.makeText(context, "Invalid response format", Toast.LENGTH_SHORT).show()
+                    }
                 } else {
                     Toast.makeText(context, "Unsuccessful response: ${response.code()}", Toast.LENGTH_SHORT).show()
                 }
