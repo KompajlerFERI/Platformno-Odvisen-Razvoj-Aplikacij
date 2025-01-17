@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/popUpFragment"
     android:layout_width="300dp"
-    android:layout_height="250dp"
+    android:layout_height="300dp"
     android:layout_gravity="center"
     android:orientation="vertical"
     android:padding="16dp">
@@ -51,5 +51,15 @@
         android:drawableTint="@color/white"
         android:paddingTop="8dp"
         android:text="@string/simulate_data" />
+
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:drawableTint="@color/white"
+        android:paddingTop="4dp"
+        android:text="@string/back" />
 
 </LinearLayout>

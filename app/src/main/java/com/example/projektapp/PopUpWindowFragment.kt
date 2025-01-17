@@ -39,19 +39,26 @@ class PopUpWindowFragment : DialogFragment() {
 
         // Retrieve the restaurant name from arguments
         val restaurantName = arguments?.getString("restaurantName")
+        val restaurantId = arguments?.getString("restaurantId")
+        val openFromImageWithData = arguments?.getBoolean("openFromImageWithData")
         println(arguments)
 
         // Set the restaurant name to the TextView
         binding.restaurantName.text = restaurantName
 
         binding.btnCamera.setOnClickListener {
-            //findNavController().navigate(R.id.action_restaurantsFragment_to_cameraFragment)
+            // ne dela, če je program zagnan na emulatorju
             @Override
             fun onClick(v: View?) {
                 val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                 startActivityForResult(intent, REQUEST_CODE)
             }
+            if (openFromImageWithData!!) findNavController().popBackStack()
             findNavController().navigate(R.id.action_restaurantsFragment_to_dataSimulatorFragment)
+        }
+
+        binding.btnGalery.setOnClickListener {
+
         }
 
         binding.btnSimulateData.setOnClickListener {
@@ -61,11 +68,18 @@ class PopUpWindowFragment : DialogFragment() {
                 val bundle = Bundle().apply {
                     putParcelable("capturedImage", bitmap)
                     putInt("randomImageResId", randomImageResId)
+                    putString("restaurantName", restaurantName)
+                    putString("restaurantId", restaurantId)
                 }
+                if (openFromImageWithData!!) findNavController().popBackStack()
                 findNavController().navigate(R.id.action_restaurantsFragment_to_dataSimulatorFragment, bundle)
             } else {
                 Toast.makeText(context, "No images found", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        binding.btnBack.setOnClickListener {
+            dismiss()
         }
     }
 

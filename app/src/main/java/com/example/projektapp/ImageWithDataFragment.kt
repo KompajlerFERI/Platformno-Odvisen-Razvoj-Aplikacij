@@ -69,8 +69,36 @@ class ImageWithDataFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val capturedImage = arguments?.getParcelable<Bitmap>("capturedImage")
+        val restaurantName = arguments?.getString("restaurantName")
+        var restaurantId = arguments?.getString("restaurantId")
+        var capturedImage = arguments?.getParcelable<Bitmap>("capturedImage")
         val randomImageIndex = arguments?.getInt("randomImageResId")
+        checkIfImageIsCaptured(capturedImage, randomImageIndex)
+
+        binding.btnBack.setOnClickListener {
+            findNavController().navigate(R.id.action_dataSimulatorFragment_to_restaurantsFragment)
+        }
+
+        binding.btnSimulate.setOnClickListener {
+            val dialogFragment = PopUpWindowFragment()
+
+            val bundle = Bundle()
+            bundle.putString("restaurantName", restaurantName)
+            bundle.putString("restaurantId", restaurantId)
+            bundle.putBoolean("openFromImageWithData", true)
+            dialogFragment.arguments = bundle
+
+            dialogFragment.show(childFragmentManager, "PopUpWindowFragment")
+
+            if (dialogFragment.dialog?.isShowing == true) {
+                restaurantId = arguments?.getString("restaurantId")
+                capturedImage = arguments?.getParcelable<Bitmap>("capturedImage")
+                checkIfImageIsCaptured(capturedImage, randomImageIndex)
+            }
+        }
+    }
+
+    private fun checkIfImageIsCaptured(capturedImage: Bitmap?, randomImageIndex: Int?) {
         if (capturedImage != null) {
             binding.imgPicked.setImageBitmap(capturedImage)
             uploadImageToServer(capturedImage)
@@ -78,21 +106,8 @@ class ImageWithDataFragment : Fragment() {
             binding.imgPicked.setImageResource(randomImageIndex)
             val bitmap = BitmapFactory.decodeResource(resources, randomImageIndex)
             uploadImageToServer(bitmap)
-        }
-
-        binding.btnBack.setOnClickListener {
-            findNavController().navigate(R.id.action_dataSimulatorFragment_to_restaurantsFragment)
-        }
-
-        binding.btnSimulate.setOnClickListener {
-            // val randomImageResId = application.getRandomImageResId(requireContext())
-            // if (randomImageResId != null) {
-            //     binding.imgPicked.setImageResource(randomImageResId)
-            //     val bitmap = BitmapFactory.decodeResource(resources, randomImageResId)
-            //     uploadImageToServer(bitmap)
-            // } else {
-            //     Toast.makeText(context, "No images found", Toast.LENGTH_SHORT).show()
-            // }
+        } else {
+            Toast.makeText(context, "No images found", Toast.LENGTH_SHORT).show()
         }
     }
 

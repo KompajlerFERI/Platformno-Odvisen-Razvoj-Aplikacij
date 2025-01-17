@@ -14,4 +14,6 @@
     <string name="camera">Camera</string>
     <string name="simulate_data">Simulate data</string>
     <string name="gallery">Gallery</string>
+    <string name="back">Back</string>
+    <string name="img">Img</string>
 </resources>
