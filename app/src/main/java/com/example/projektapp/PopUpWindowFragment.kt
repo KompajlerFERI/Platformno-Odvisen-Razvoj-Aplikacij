@@ -11,6 +11,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Toast
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import com.example.projektapp.databinding.FragmentDialogBinding
@@ -48,13 +52,10 @@ class PopUpWindowFragment : DialogFragment() {
 
         binding.btnCamera.setOnClickListener {
             // ne dela, če je program zagnan na emulatorju
-            @Override
-            fun onClick(v: View?) {
-                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                startActivityForResult(intent, REQUEST_CODE)
-            }
+
+
             if (openFromImageWithData!!) findNavController().popBackStack()
-            findNavController().navigate(R.id.action_restaurantsFragment_to_dataSimulatorFragment)
+            findNavController().navigate(R.id.action_restaurantsFragment_to_cameraFragment2)
         }
 
         binding.btnGalery.setOnClickListener {

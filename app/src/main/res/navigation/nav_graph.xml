@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_restaurantsFragment_to_dataSimulatorFragment"
             app:destination="@id/dataSimulatorFragment" />
+        <action
+            android:id="@+id/action_restaurantsFragment_to_cameraFragment2"
+            app:destination="@id/cameraFragment" />
     </fragment>
 
     <fragment
