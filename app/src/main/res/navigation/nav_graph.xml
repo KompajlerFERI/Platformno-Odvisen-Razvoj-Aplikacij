@@ -20,9 +20,10 @@
 
     <fragment
         android:id="@+id/mapFragment"
-        android:name="com.example.projektapp.MapFragment"
+        android:name="com.example.projektapp.MapsFragment"
         android:label="fragment_map"
-        tools:layout="@layout/fragment_map" />
+
+        tools:layout="@layout/fragment_maps" />
     <fragment
         android:id="@+id/cameraFragment"
         android:name="com.example.projektapp.CameraFragment"
@@ -41,5 +42,4 @@
             android:id="@+id/action_dataSimulatorFragment_to_restaurantsFragment"
             app:destination="@id/restaurantsFragment" />
     </fragment>
-
 </navigation>
