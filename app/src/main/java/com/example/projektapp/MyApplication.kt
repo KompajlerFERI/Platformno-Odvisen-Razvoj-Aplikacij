@@ -9,6 +9,7 @@ import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import timber.log.Timber
 import java.io.IOException
+import kotlin.random.Random
 
 class MyApplication : Application() {
     lateinit var restaurants: List<Restaurant>
@@ -45,6 +46,29 @@ class MyApplication : Application() {
         withContext(Dispatchers.Main) {
             Timber.e(message)
             Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        }
+    }
+
+    public fun getRandomImageResId(context: Context): Int? {
+        val drawables = getDrawableResources()
+        val imgDrawables = drawables.filter { it.startsWith("img") }
+        return if (imgDrawables.isNotEmpty()) {
+            val randomIndex = Random.nextInt(imgDrawables.size)
+            resources.getIdentifier(imgDrawables[randomIndex], "drawable", context.packageName)
+        } else {
+            null
+        }
+    }
+
+    fun getDrawableResources(): List<String> {
+        val fields = R.drawable::class.java.declaredFields
+        return fields.mapNotNull { field ->
+            try {
+                field.get(null) as? Int
+                field.name
+            } catch (e: Exception) {
+                null
+            }
         }
     }
 }
