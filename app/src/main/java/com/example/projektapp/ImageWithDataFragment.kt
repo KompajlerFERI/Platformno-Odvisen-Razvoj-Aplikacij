@@ -20,6 +20,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.POST
 import android.graphics.BitmapFactory
 import android.graphics.Bitmap
+import android.util.Log
 import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.http.Body
 import java.io.File
@@ -73,6 +74,13 @@ class ImageWithDataFragment : Fragment() {
         var restaurantId = arguments?.getString("restaurantId")
         var capturedImage = arguments?.getParcelable<Bitmap>("capturedImage")
         val randomImageIndex = arguments?.getInt("randomImageResId")
+
+        if (capturedImage != null) {
+            Log.d("ImageWithDataFragment", "Image received and setting bitmap")
+        } else {
+            Log.e("ImageWithDataFragment", "No image received in the bundle")
+        }
+
         checkIfImageIsCaptured(capturedImage, randomImageIndex)
 
         binding.btnBack.setOnClickListener {
@@ -82,10 +90,11 @@ class ImageWithDataFragment : Fragment() {
         binding.btnSimulate.setOnClickListener {
             val dialogFragment = PopUpWindowFragment()
 
-            val bundle = Bundle()
-            bundle.putString("restaurantName", restaurantName)
-            bundle.putString("restaurantId", restaurantId)
-            bundle.putBoolean("openFromImageWithData", true)
+            val bundle = Bundle().apply {
+                putString("restaurantName", restaurantName)
+                putString("restaurantId", restaurantId)
+                putBoolean("openFromImageWithData", true)
+            }
             dialogFragment.arguments = bundle
 
             dialogFragment.show(childFragmentManager, "PopUpWindowFragment")
@@ -97,6 +106,9 @@ class ImageWithDataFragment : Fragment() {
             }
         }
     }
+
+
+
 
     private fun checkIfImageIsCaptured(capturedImage: Bitmap?, randomImageIndex: Int?) {
         if (capturedImage != null) {

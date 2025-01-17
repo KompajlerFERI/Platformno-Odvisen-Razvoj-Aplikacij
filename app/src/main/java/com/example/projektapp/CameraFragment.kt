@@ -1,6 +1,8 @@
 package com.example.projektapp
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,9 +15,11 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import com.example.projektapp.databinding.FragmentCameraBinding
 import java.io.File
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -53,6 +57,10 @@ class CameraFragment : Fragment() {
         imageCapture = ImageCapture.Builder().build()
         outputDirectory = getOutputDirectory()
         cameraExecutor = Executors.newSingleThreadExecutor()
+
+        binding.btnTakePhoto.setOnClickListener {
+            takePhoto()
+        }
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
@@ -107,17 +115,14 @@ class CameraFragment : Fragment() {
         }, ContextCompat.getMainExecutor(requireContext()))
     }
 
-
     private fun takePhoto() {
-        val imageCapture = imageCapture ?: return
+        val imageCapture = this.imageCapture // Use the instance initialized in startCamera
+        if (!::imageCapture.isInitialized) {
+            Log.e("CameraFragment", "ImageCapture is not initialized")
+            return
+        }
 
-        val photoFile = File(
-            outputDirectory,
-            SimpleDateFormat(
-                "yyyy-MM-dd HH:mm:ss",
-                Locale.US
-            ).format(System.currentTimeMillis()) + ".jpg"
-        )
+        val photoFile = createImageFile() ?: return // Make sure photoFile is not null
 
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
 
@@ -125,21 +130,43 @@ class CameraFragment : Fragment() {
             outputOptions, cameraExecutor,
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Image saved: ${photoFile.absolutePath}",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    requireActivity().runOnUiThread {
+                        try {
+                            Log.d("CameraFragment", "Photo saved successfully")
+                            // Perform navigation or lifecycle actions here, safely on the main thread
+                            findNavController().navigate(R.id.action_cameraFragment_to_confirmPhotoFragment)
+                        } catch (e: Exception) {
+                            Log.e("CameraFragment", "Error saving image: ${e.message}")
+                        }
+                    }
                 }
 
                 override fun onError(exception: ImageCaptureException) {
-                    Toast.makeText(
-                        requireContext(),
-                        "Image capture failed: ${exception.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    Log.e("CameraFragment", "Error capturing image: ${exception.message}")
+                    activity?.runOnUiThread {
+                        if (isAdded) {
+                            Toast.makeText(
+                                requireContext(),
+                                "Image capture failed: ${exception.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
                 }
             })
+    }
+
+    private fun createImageFile(): File? {
+        return try {
+            val photoDirectory = File(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "ProjectApp")
+            if (!photoDirectory.exists()) photoDirectory.mkdirs()
+
+            val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
+            File(photoDirectory, "IMG_${timestamp}.jpg")
+        } catch (e: Exception) {
+            Log.e("CameraFragment", "Error creating photo file: ${e.message}")
+            null
+        }
     }
 
     override fun onDestroyView() {
