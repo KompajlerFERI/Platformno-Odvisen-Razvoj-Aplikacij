@@ -6,12 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.example.projektapp.databinding.FragmentSimulateDataBinding
-import android.widget.ImageView
+import com.example.projektapp.databinding.FragmentImageWithDataBinding
 import android.widget.Toast
-import kotlin.random.Random
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
@@ -20,12 +17,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
-import retrofit2.http.Multipart
 import retrofit2.http.POST
-import retrofit2.http.Part
 import android.graphics.BitmapFactory
-import android.util.Base64
-import android.content.res.Resources
 import android.graphics.Bitmap
 import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.http.Body
@@ -58,34 +51,63 @@ object RetrofitClient {
     }
 }
 
-class DataSimulatorFragment : Fragment() {
-    private var _binding: FragmentSimulateDataBinding? = null
+class ImageWithDataFragment : Fragment() {
+    private var _binding: FragmentImageWithDataBinding? = null
     private val binding get() = _binding!!
+
+    private val application: MyApplication
+        get() = requireActivity().application as MyApplication
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentSimulateDataBinding.inflate(inflater, container, false)
+        _binding = FragmentImageWithDataBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val restaurantName = arguments?.getString("restaurantName")
+        var restaurantId = arguments?.getString("restaurantId")
+        var capturedImage = arguments?.getParcelable<Bitmap>("capturedImage")
+        val randomImageIndex = arguments?.getInt("randomImageResId")
+        checkIfImageIsCaptured(capturedImage, randomImageIndex)
+
         binding.btnBack.setOnClickListener {
             findNavController().navigate(R.id.action_dataSimulatorFragment_to_restaurantsFragment)
         }
 
         binding.btnSimulate.setOnClickListener {
-            val randomImageResId = getRandomImageResId()
-            if (randomImageResId != null) {
-                binding.imgPicked.setImageResource(randomImageResId)
-                val bitmap = BitmapFactory.decodeResource(resources, randomImageResId)
-                uploadImageToServer(bitmap)
-            } else {
-                Toast.makeText(context, "No images found", Toast.LENGTH_SHORT).show()
+            val dialogFragment = PopUpWindowFragment()
+
+            val bundle = Bundle()
+            bundle.putString("restaurantName", restaurantName)
+            bundle.putString("restaurantId", restaurantId)
+            bundle.putBoolean("openFromImageWithData", true)
+            dialogFragment.arguments = bundle
+
+            dialogFragment.show(childFragmentManager, "PopUpWindowFragment")
+
+            if (dialogFragment.dialog?.isShowing == true) {
+                restaurantId = arguments?.getString("restaurantId")
+                capturedImage = arguments?.getParcelable<Bitmap>("capturedImage")
+                checkIfImageIsCaptured(capturedImage, randomImageIndex)
             }
+        }
+    }
+
+    private fun checkIfImageIsCaptured(capturedImage: Bitmap?, randomImageIndex: Int?) {
+        if (capturedImage != null) {
+            binding.imgPicked.setImageBitmap(capturedImage)
+            uploadImageToServer(capturedImage)
+        } else if (randomImageIndex != null) {
+            binding.imgPicked.setImageResource(randomImageIndex)
+            val bitmap = BitmapFactory.decodeResource(resources, randomImageIndex)
+            uploadImageToServer(bitmap)
+        } else {
+            Toast.makeText(context, "No images found", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -99,13 +121,18 @@ class DataSimulatorFragment : Fragment() {
         val requestBody = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
         val call = RetrofitClient.instance.uploadImage(requestBody)
 
+        Toast.makeText(context, "Uploading image...", Toast.LENGTH_SHORT).show()
+        binding.progressBar.visibility = View.VISIBLE
+
         call.enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                binding.progressBar.visibility = View.GONE
                 t.printStackTrace()
                 Toast.makeText(context, "Failed to upload image", Toast.LENGTH_SHORT).show()
             }
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                binding.progressBar.visibility = View.GONE
                 if (response.isSuccessful) {
                     val responseBody = response.body()?.string()?.toDoubleOrNull()
                     if (responseBody != null) {
@@ -120,30 +147,6 @@ class DataSimulatorFragment : Fragment() {
                 }
             }
         })
-    }
-
-
-    private fun getRandomImageResId(): Int? {
-        val drawables = getDrawableResources()
-        val imgDrawables = drawables.filter { it.startsWith("img") }
-        return if (imgDrawables.isNotEmpty()) {
-            val randomIndex = Random.nextInt(imgDrawables.size)
-            resources.getIdentifier(imgDrawables[randomIndex], "drawable", requireContext().packageName)
-        } else {
-            null
-        }
-    }
-
-    private fun getDrawableResources(): List<String> {
-        val fields = R.drawable::class.java.declaredFields
-        return fields.mapNotNull { field ->
-            try {
-                field.get(null) as? Int
-                field.name
-            } catch (e: Exception) {
-                null
-            }
-        }
     }
 
     override fun onDestroyView() {

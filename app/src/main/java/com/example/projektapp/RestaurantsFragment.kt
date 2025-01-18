@@ -75,6 +75,7 @@ class RestaurantsFragment : Fragment() {
         val bundle = Bundle()
         bundle.putString("restaurantName", restaurant.name)
         bundle.putString("restaurantId", restaurant.id)
+        bundle.putBoolean("openFromImageWithData", false)
         dialogFragment.arguments = bundle
 
         dialogFragment.show(childFragmentManager, "PopUpWindowFragment")
