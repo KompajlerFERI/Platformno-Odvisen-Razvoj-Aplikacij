@@ -9,6 +9,7 @@ import com.example.lib.Restaurant
 import com.example.projektapp.databinding.RestaurantRowBinding
 import com.facebook.shimmer.Shimmer
 import com.facebook.shimmer.ShimmerDrawable
+import kotlin.random.Random
 
 
 class RestaurantAdapter(
