@@ -20,11 +20,17 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.POST
 import android.graphics.BitmapFactory
 import android.graphics.Bitmap
+import android.os.Handler
+import android.os.Looper
 import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.http.Body
 import java.io.File
 import java.io.FileOutputStream
 import kotlin.math.ceil
+import kotlin.random.Random
+import android.os.CountDownTimer
+import android.text.Editable
+import android.text.TextWatcher
 
 interface AzureApiService {
     @POST("PeopleRecognizer")
@@ -54,6 +60,12 @@ object RetrofitClient {
 class ImageWithDataFragment : Fragment() {
     private var _binding: FragmentImageWithDataBinding? = null
     private val binding get() = _binding!!
+    private val handler = Handler(Looper.getMainLooper())
+    private var simulationRunnable: Runnable? = null
+    private var totalTimer: CountDownTimer? = null
+    private var intervalTimer: CountDownTimer? = null
+    private var restaurantName: String = ""
+    private var restaurantId: String = ""
 
     private val application: MyApplication
         get() = requireActivity().application as MyApplication
@@ -69,46 +81,95 @@ class ImageWithDataFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val restaurantName = arguments?.getString("restaurantName")
-        var restaurantId = arguments?.getString("restaurantId")
-        var capturedImage = arguments?.getParcelable<Bitmap>("capturedImage")
-        val randomImageIndex = arguments?.getInt("randomImageResId")
-        checkIfImageIsCaptured(capturedImage, randomImageIndex)
+        val bundle = arguments
+        if (bundle != null) {
+            restaurantName = bundle.getString("restaurantName") ?: ""
+            restaurantId = bundle.getString("restaurantId") ?: ""
+            binding.simRestaurantName.text = restaurantName;
+        }
+
+
 
         binding.btnBack.setOnClickListener {
             findNavController().navigate(R.id.action_dataSimulatorFragment_to_restaurantsFragment)
         }
 
+        binding.inputSimulationTimer.addTextChangedListener(inputWatcher)
+        binding.inputSimulationInterval.addTextChangedListener(inputWatcher)
+
         binding.btnSimulate.setOnClickListener {
-            val dialogFragment = PopUpWindowFragment()
+            val timerText = binding.inputSimulationTimer.text.toString()
+            val intervalText = binding.inputSimulationInterval.text.toString()
 
-            val bundle = Bundle()
-            bundle.putString("restaurantName", restaurantName)
-            bundle.putString("restaurantId", restaurantId)
-            bundle.putBoolean("openFromImageWithData", true)
-            dialogFragment.arguments = bundle
-
-            dialogFragment.show(childFragmentManager, "PopUpWindowFragment")
-
-            if (dialogFragment.dialog?.isShowing == true) {
-                restaurantId = arguments?.getString("restaurantId")
-                capturedImage = arguments?.getParcelable<Bitmap>("capturedImage")
-                checkIfImageIsCaptured(capturedImage, randomImageIndex)
+            if (timerText.isNotEmpty() && intervalText.isNotEmpty()) {
+                val timerMillis = timerText.toLong() * 60 * 1000
+                val intervalMillis = intervalText.toLong() * 60 * 1000
+                startSimulation(timerMillis, intervalMillis)
+            } else {
+                Toast.makeText(context, "Please enter valid times", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun checkIfImageIsCaptured(capturedImage: Bitmap?, randomImageIndex: Int?) {
-        if (capturedImage != null) {
-            binding.imgPicked.setImageBitmap(capturedImage)
-            uploadImageToServer(capturedImage)
-        } else if (randomImageIndex != null) {
-            binding.imgPicked.setImageResource(randomImageIndex)
-            val bitmap = BitmapFactory.decodeResource(resources, randomImageIndex)
-            uploadImageToServer(bitmap)
-        } else {
-            Toast.makeText(context, "No images found", Toast.LENGTH_SHORT).show()
+    private val inputWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            val timerText = binding.inputSimulationTimer.text.toString().trim()
+            val intervalText = binding.inputSimulationInterval.text.toString().trim()
+            binding.btnSimulate.isEnabled = timerText.isNotEmpty() && intervalText.isNotEmpty()
         }
+
+        override fun afterTextChanged(s: Editable?) {}
+    }
+
+    private fun startSimulation(durationMillis: Long, intervalMillis: Long) {
+        val endTime = System.currentTimeMillis() + durationMillis
+
+        totalTimer?.cancel()
+        intervalTimer?.cancel()
+
+        totalTimer = object : CountDownTimer(durationMillis, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val minutes = (millisUntilFinished / 1000) / 60
+                val seconds = (millisUntilFinished / 1000) % 60
+                binding.timerTotal.text = String.format("Total Time: %02d:%02d", minutes, seconds)
+            }
+
+            override fun onFinish() {
+                binding.timerTotal.text = "Total Time: 00:00"
+            }
+        }.start()
+
+        simulationRunnable = object : Runnable {
+            override fun run() {
+                if (System.currentTimeMillis() < endTime) {
+                    val randomImageResId = getRandomImageResId()
+                    if (randomImageResId != null) {
+                        binding.imgPicked.setImageResource(randomImageResId)
+                        val bitmap = BitmapFactory.decodeResource(resources, randomImageResId)
+                        uploadImageToServer(bitmap)
+                    } else {
+                        Toast.makeText(context, "No images found", Toast.LENGTH_SHORT).show()
+                    }
+
+                    intervalTimer = object : CountDownTimer(intervalMillis, 1000) {
+                        override fun onTick(millisUntilFinished: Long) {
+                            val minutes = (millisUntilFinished / 1000) / 60
+                            val seconds = (millisUntilFinished / 1000) % 60
+                            binding.timerInterval.text = String.format("Interval Time: %02d:%02d", minutes, seconds)
+                        }
+
+                        override fun onFinish() {
+                            binding.timerInterval.text = "Interval Time: 00:00"
+                        }
+                    }.start()
+
+                    handler.postDelayed(this, intervalMillis)
+                }
+            }
+        }
+        handler.post(simulationRunnable!!)
     }
 
     private fun uploadImageToServer(bitmap: Bitmap) {
@@ -121,18 +182,13 @@ class ImageWithDataFragment : Fragment() {
         val requestBody = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
         val call = RetrofitClient.instance.uploadImage(requestBody)
 
-        Toast.makeText(context, "Uploading image...", Toast.LENGTH_SHORT).show()
-        binding.progressBar.visibility = View.VISIBLE
-
         call.enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                binding.progressBar.visibility = View.GONE
                 t.printStackTrace()
                 Toast.makeText(context, "Failed to upload image", Toast.LENGTH_SHORT).show()
             }
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                binding.progressBar.visibility = View.GONE
                 if (response.isSuccessful) {
                     val responseBody = response.body()?.string()?.toDoubleOrNull()
                     if (responseBody != null) {
@@ -149,8 +205,34 @@ class ImageWithDataFragment : Fragment() {
         })
     }
 
+    private fun getRandomImageResId(): Int? {
+        val drawables = getDrawableResources()
+        val imgDrawables = drawables.filter { it.startsWith("img") }
+        return if (imgDrawables.isNotEmpty()) {
+            val randomIndex = Random.nextInt(imgDrawables.size)
+            resources.getIdentifier(imgDrawables[randomIndex], "drawable", requireContext().packageName)
+        } else {
+            null
+        }
+    }
+
+    private fun getDrawableResources(): List<String> {
+        val fields = R.drawable::class.java.declaredFields
+        return fields.mapNotNull { field ->
+            try {
+                field.get(null) as? Int
+                field.name
+            } catch (e: Exception) {
+                null
+            }
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        handler.removeCallbacks(simulationRunnable!!)
+        totalTimer?.cancel()
+        intervalTimer?.cancel()
     }
 }
