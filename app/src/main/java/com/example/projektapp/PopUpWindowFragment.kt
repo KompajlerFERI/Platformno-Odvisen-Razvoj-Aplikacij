@@ -78,6 +78,14 @@ class PopUpWindowFragment : DialogFragment() {
             }
         }
 
+        binding.btnEvent.setOnClickListener {
+            val bundle = Bundle().apply {
+                putString("restaurantName", restaurantName)
+                putString("restaurantId", restaurantId)
+            }
+            findNavController().navigate(R.id.action_restaurantsFragment_to_priceChangeEventFragment, bundle)
+        }
+
         binding.btnBack.setOnClickListener {
             dismiss()
         }

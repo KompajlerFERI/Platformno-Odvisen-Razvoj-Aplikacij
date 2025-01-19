@@ -112,4 +112,9 @@ dependencies {
 
     // L O G G I N G   I N T E R C E P T O R
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+
+    // B O U N C Y   C A S T L E
+    implementation ("org.bouncycastle:bcprov-jdk15to18:1.70")
+
+    implementation ("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5")
 }
