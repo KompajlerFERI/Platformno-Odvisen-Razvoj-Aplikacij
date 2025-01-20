@@ -48,7 +48,8 @@ class RestaurantAdapter(
             tvRestaurantName.text = restaurant.name
             tvMealPrice.text = holder.itemView.context.getString(R.string.meal_price, restaurant.mealPrice)
             tvMealSurcharge.text = holder.itemView.context.getString(R.string.meal_surcharge, restaurant.mealSurcharge)
-            tvRestaurantCapacity.text = holder.itemView.context.getString(R.string.restaurant_capacity, restaurant.lastCapacity, restaurant.maxCapacity)
+            val restaurantLastCapacity = if (restaurant.lastCapacity == -1) "?" else restaurant.lastCapacity.toString()
+            tvRestaurantCapacity.text = holder.itemView.context.getString(R.string.restaurant_capacity, restaurantLastCapacity, restaurant.maxCapacity)
 
             root.setOnClickListener {
                 itemClickListener(restaurant)
