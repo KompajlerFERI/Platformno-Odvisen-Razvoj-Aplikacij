@@ -61,6 +61,11 @@ class PopUpWindowFragment : DialogFragment() {
 
         }
 
+        binding.btnSubscribe.setOnClickListener {
+            MqttClientHandler.connect()
+            MqttClientHandler.subscribe("price")
+        }
+
         binding.btnSimulateData.setOnClickListener {
             val randomImageResId = application.getRandomImageResId(requireContext())
             if (randomImageResId != null) {

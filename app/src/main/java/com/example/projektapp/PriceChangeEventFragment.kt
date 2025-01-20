@@ -51,89 +51,15 @@ class PriceChangeEventFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Call the mqttClient function to configure and make the request
         binding.btnConfirm.setOnClickListener {
-            mqttClientConnect()
-        }
-    }
-
-    // Function to configure and use OkHttpClient with SSLContext
-    private fun mqttClientConnect() {
-        CoroutineScope(Dispatchers.Main).launch {
-            val sslSocketFactory = getSSLSocketFactory()
-
-            if (sslSocketFactory != null) {
-                val mqttUrl = "ssl://mqtt-kompajler.northeurope-1.ts.eventgrid.azure.net:8443"
-                val clientId = "KompajlerEvent"
-                val persistence = MemoryPersistence()
-
-                try {
-                    val mqttClient = MqttClient(mqttUrl, clientId, persistence)
-                    val options = MqttConnectOptions().apply {
-                        socketFactory = sslSocketFactory
-                        isCleanSession = true
-                        mqttVersion = MqttConnectOptions.MQTT_VERSION_3_1_1
-                        userName = "KompajlerEvent"
-                    }
-
-                    mqttClient.connect(options)
-                    if (mqttClient.isConnected) {
-                        Toast.makeText(requireContext(), "Connected successfully", Toast.LENGTH_LONG).show()
-                        Log.d("Price change event", "Successfully connected")
-                    } else {
-                        Toast.makeText(requireContext(), "Connection failed", Toast.LENGTH_SHORT).show()
-                        Log.d("Price change event", "Connection failed")
-                    }
-                } catch (e: MqttException) {
-                    e.printStackTrace()
-                    Toast.makeText(requireContext(), "Connection error: ${e.message}", Toast.LENGTH_SHORT).show()
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    Toast.makeText(requireContext(), "Unexpected error: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
+            val newPrice = binding.txtNewPrice.text.toString()
+            if (newPrice.isNotEmpty()) {
+                MqttClientHandler.connect()
+                MqttClientHandler.publish("price", newPrice)
+                MqttClientHandler.disconnect()
             } else {
-                Toast.makeText(requireContext(), "SSL/TLS configuration error", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Please enter a price", Toast.LENGTH_SHORT).show()
             }
-        }
-    }
-
-
-    private fun getSSLSocketFactory(): javax.net.ssl.SSLSocketFactory? {
-        try {
-            val clientCertificateInputStream = resources.openRawResource(R.raw.kompajlerevent) // Your .p12 client certificate file
-            val password = BuildConfig.MQTT_PASSWORD.toCharArray() // Password for the .p12 file
-
-            val trustStoreInputStream = resources.openRawResource(R.raw.truststore) // Your .bks truststore file
-            val trustStorePassword = BuildConfig.MQTT_PASSWORD1.toCharArray() // Password for the .bks file
-
-            // Load the client certificate (PKCS#12)
-            val keyStore = KeyStore.getInstance("PKCS12").apply {
-                load(clientCertificateInputStream, password)
-            }
-
-            // Load the truststore (BKS)
-            val trustStore = KeyStore.getInstance("BKS").apply {
-                load(trustStoreInputStream, trustStorePassword)
-            }
-
-            // Initialize KeyManagerFactory for the client certificate
-            val keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm()).apply {
-                init(keyStore, password)
-            }
-
-            // Initialize TrustManagerFactory for the TrustStore
-            val trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm()).apply {
-                init(trustStore)
-            }
-
-            // Initialize SSLContext with both KeyManager and TrustManager
-            val sslContext = SSLContext.getInstance("TLS")
-            sslContext.init(keyManagerFactory.keyManagers, trustManagerFactory.trustManagers, null)
-
-            return sslContext.socketFactory
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return null // Return null if there is an error
         }
     }
 }
