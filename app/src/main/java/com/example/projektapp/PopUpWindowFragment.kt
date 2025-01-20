@@ -9,7 +9,6 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
@@ -44,7 +43,7 @@ class PopUpWindowFragment : DialogFragment() {
         println(arguments)
 
         // Set the restaurant name to the TextView
-        binding.restaurantName.text = restaurantName
+        binding.tvDetectCapacityDescription.text = getString(R.string.detect_capacity_description, restaurantName?.lowercase())
 
         binding.btnCamera.setOnClickListener {
             // ne dela, če je program zagnan na emulatorju
@@ -78,7 +77,7 @@ class PopUpWindowFragment : DialogFragment() {
             }
         }
 
-        binding.btnBack.setOnClickListener {
+        binding.btnClose.setOnClickListener {
             dismiss()
         }
     }
@@ -102,11 +101,13 @@ class PopUpWindowFragment : DialogFragment() {
 
     override fun onStart() {
         super.onStart()
-
         dialog?.window?.setLayout(
-            resources.getDimensionPixelSize(R.dimen.popup_width),
-            resources.getDimensionPixelSize(R.dimen.popup_height)
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
         )
+        dialog?.window?.setBackgroundDrawableResource(R.drawable.rounded_corners)
+        val margin = resources.getDimensionPixelSize(R.dimen.margin_medium)
+        dialog?.window?.decorView?.setPadding(margin, margin, margin, margin)
     }
 
     override fun onDestroyView() {

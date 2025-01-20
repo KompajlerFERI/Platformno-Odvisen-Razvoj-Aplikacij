@@ -3,6 +3,7 @@
     <dimen name="margin_small">8dp</dimen>
     <dimen name="margin_medium">16dp</dimen>
     <dimen name="margin_large">32dp</dimen>
+    <dimen name="margin_extra_large">48dp</dimen>
 
     <dimen name="padding_small">8dp</dimen>
     <dimen name="padding_medium">16dp</dimen>
@@ -12,6 +13,10 @@
     <dimen name="text_medium">12sp</dimen>
     <dimen name="text_large">16sp</dimen>
     <dimen name="text_button">16sp</dimen>
+
+    <dimen name="icon_small">8dp</dimen>
+    <dimen name="icon_medium">16dp</dimen>
+    <dimen name="icon_large">32dp</dimen>
 
     <dimen name="card_elevation">6dp</dimen>
 
