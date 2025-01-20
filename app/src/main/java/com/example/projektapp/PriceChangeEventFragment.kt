@@ -51,14 +51,18 @@ class PriceChangeEventFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val restaurantName = arguments?.getString("restaurantName")
+        val restaurantId = arguments?.getString("restaurantId")
+
         binding.btnConfirm.setOnClickListener {
             val newPrice = binding.txtNewPrice.text.toString()
-            if (newPrice.isNotEmpty()) {
+            if (newPrice.isNotEmpty() && restaurantName != null && restaurantId != null) {
+                val message = "$restaurantName|$newPrice|$restaurantId"
                 MqttClientHandler.connect()
-                MqttClientHandler.publish("price", newPrice)
+                MqttClientHandler.publish("price", message)
                 MqttClientHandler.disconnect()
             } else {
-                Toast.makeText(requireContext(), "Please enter a price", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Please enter a price and ensure restaurant details are available", Toast.LENGTH_SHORT).show()
             }
         }
     }
