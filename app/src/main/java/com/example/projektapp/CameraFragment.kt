@@ -1,6 +1,9 @@
 package com.example.projektapp
 
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.media.ExifInterface
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
@@ -133,8 +136,18 @@ class CameraFragment : Fragment() {
                     requireActivity().runOnUiThread {
                         try {
                             Log.d("CameraFragment", "Photo saved successfully")
-                            // Perform navigation or lifecycle actions here, safely on the main thread
-                            findNavController().navigate(R.id.action_cameraFragment_to_confirmPhotoFragment)
+                            // Convert saved image file to Bitmap
+                            val bitmapOptions = BitmapFactory.Options().apply {
+                                inJustDecodeBounds = false
+                            }
+                            val capturedBitmap = BitmapFactory.decodeFile(photoFile.absolutePath)
+
+                            Log.d("CameraFragment", "Bitmap created, size: ${capturedBitmap?.width}x${capturedBitmap?.height}")
+                            val bundle = Bundle().apply {
+                                putParcelable("capturedImage", capturedBitmap)
+                            }
+                            // Pass the Bitmap via Bundle
+                            findNavController().navigate(R.id.action_cameraFragment_to_confirmPhotoFragment, bundle)
                         } catch (e: Exception) {
                             Log.e("CameraFragment", "Error saving image: ${e.message}")
                         }
@@ -154,6 +167,7 @@ class CameraFragment : Fragment() {
                     }
                 }
             })
+
     }
 
     private fun createImageFile(): File? {
