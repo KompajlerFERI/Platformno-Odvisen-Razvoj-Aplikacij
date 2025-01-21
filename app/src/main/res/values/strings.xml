@@ -13,6 +13,8 @@
     <string name="placeholder">PLACEHOLDER</string>
     <string name="detect_capacity">Detect capacity</string>
     <string name="detect_capacity_description">Detect capacity for %s</string>
+    <string name="mqtt">MQTT</string>
+    <string name="mqtt_description">Actions related to MQTT</string>
     <string name="camera">Camera</string>
     <string name="simulate_data">Simulate data</string>
     <string name="gallery">Gallery</string>

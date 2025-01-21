@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import com.example.projektapp.databinding.FragmentDialogBinding
+import com.google.android.material.tabs.TabLayoutMediator
 
 class PopUpWindowFragment : DialogFragment() {
     private var _binding: FragmentDialogBinding? = null
@@ -36,59 +37,17 @@ class PopUpWindowFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Retrieve the restaurant name from arguments
-        val restaurantName = arguments?.getString("restaurantName")
-        val restaurantId = arguments?.getString("restaurantId")
-        val openFromImageWithData = arguments?.getBoolean("openFromImageWithData")
-        println(arguments)
-
-        // Set the restaurant name to the TextView
-        binding.tvDetectCapacityDescription.text = getString(R.string.detect_capacity_description, restaurantName?.lowercase())
-
-        binding.btnCamera.setOnClickListener {
-            // ne dela, če je program zagnan na emulatorju
-            @Override
-            fun onClick(v: View?) {
-                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                startActivityForResult(intent, REQUEST_CODE)
-            }
-            if (openFromImageWithData!!) findNavController().popBackStack()
-            findNavController().navigate(R.id.action_restaurantsFragment_to_dataSimulatorFragment)
+        val data = Bundle().apply {
+            putString("restaurantName", arguments?.getString("restaurantName"))
+            putString("restaurantId", arguments?.getString("restaurantId"))
+            putBoolean("openFromImageWithData", arguments?.getBoolean("openFromImageWithData") ?: false)
         }
 
-        binding.btnGalery.setOnClickListener {
+        val adapter = SlidesAdapter(requireActivity(), data)
+        binding.viewPager.adapter = adapter
 
-        }
-
-        binding.btnSubscribe.setOnClickListener {
-            MqttClientHandler.connect()
-            MqttClientHandler.subscribe("price")
-        }
-
-        binding.btnSimulateData.setOnClickListener {
-            val randomImageResId = application.getRandomImageResId(requireContext())
-            if (randomImageResId != null) {
-                val bitmap = BitmapFactory.decodeResource(resources, randomImageResId)
-                val bundle = Bundle().apply {
-                    putParcelable("capturedImage", bitmap)
-                    putInt("randomImageResId", randomImageResId)
-                    putString("restaurantName", restaurantName)
-                    putString("restaurantId", restaurantId)
-                }
-                if (openFromImageWithData!!) findNavController().popBackStack()
-                findNavController().navigate(R.id.action_restaurantsFragment_to_dataSimulatorFragment, bundle)
-            } else {
-                Toast.makeText(context, "No images found", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        binding.btnEvent.setOnClickListener {
-            val bundle = Bundle().apply {
-                putString("restaurantName", restaurantName)
-                putString("restaurantId", restaurantId)
-            }
-            findNavController().navigate(R.id.action_restaurantsFragment_to_priceChangeEventFragment, bundle)
-        }
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { _, _ -> }.attach()
+        binding.dotsIndicator.attachTo(binding.viewPager)
 
         binding.btnClose.setOnClickListener {
             dismiss()
@@ -116,11 +75,9 @@ class PopUpWindowFragment : DialogFragment() {
         super.onStart()
         dialog?.window?.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
+            ViewGroup.LayoutParams.WRAP_CONTENT,
         )
         dialog?.window?.setBackgroundDrawableResource(R.drawable.rounded_corners)
-        val margin = resources.getDimensionPixelSize(R.dimen.margin_medium)
-        dialog?.window?.decorView?.setPadding(margin, margin, margin, margin)
     }
 
     override fun onDestroyView() {

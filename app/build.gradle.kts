@@ -117,4 +117,7 @@ dependencies {
     implementation ("org.bouncycastle:bcprov-jdk15to18:1.70")
 
     implementation ("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5")
+
+    // D O T S   I N D I C A T O R
+    implementation("com.tbuonomo:dotsindicator:5.1.0")
 }
