@@ -32,7 +32,7 @@
     </style>
 
     <style name="LabelMediumBold">
-        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/text_large</item>
         <item name="android:textStyle">bold</item>
         <!--<item name="android:fontFamily">@font/sf_pro_bold</item>-->

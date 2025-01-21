@@ -18,4 +18,9 @@
     <string name="gallery">Gallery</string>
     <string name="back">Back</string>
     <string name="img">Img</string>
+    <string name="price_change">Price change</string>
+    <string name="subscribe">Subscribe</string>
+    <string name="detect_capacity">Detect capacity</string>
+    <string name="detect_capacity_description">Detect capacity for %s</string>
+
 </resources>

@@ -60,6 +60,11 @@ class PopUpWindowFragment : DialogFragment() {
 
         }
 
+        binding.btnSubscribe.setOnClickListener {
+            MqttClientHandler.connect()
+            MqttClientHandler.subscribe("price")
+        }
+
         binding.btnSimulateData.setOnClickListener {
             val randomImageResId = application.getRandomImageResId(requireContext())
             if (randomImageResId != null) {
@@ -75,6 +80,14 @@ class PopUpWindowFragment : DialogFragment() {
             } else {
                 Toast.makeText(context, "No images found", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        binding.btnEvent.setOnClickListener {
+            val bundle = Bundle().apply {
+                putString("restaurantName", restaurantName)
+                putString("restaurantId", restaurantId)
+            }
+            findNavController().navigate(R.id.action_restaurantsFragment_to_priceChangeEventFragment, bundle)
         }
 
         binding.btnClose.setOnClickListener {

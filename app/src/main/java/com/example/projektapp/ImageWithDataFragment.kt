@@ -31,6 +31,11 @@ import kotlin.random.Random
 import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.Request
 
 interface AzureApiService {
     @POST("PeopleRecognizer")
@@ -194,6 +199,7 @@ class ImageWithDataFragment : Fragment() {
                     if (responseBody != null) {
                         val roundedValue = ceil(responseBody).toInt()
                         binding.lblPredictedAmount.text = "Predicted Amount: $roundedValue"
+                        updateLastCapacity(restaurantId, roundedValue)
                         Toast.makeText(context, "Received response: $roundedValue", Toast.LENGTH_LONG).show()
                     } else {
                         Toast.makeText(context, "Invalid response format", Toast.LENGTH_SHORT).show()
@@ -203,6 +209,34 @@ class ImageWithDataFragment : Fragment() {
                 }
             }
         })
+    }
+
+    fun updateLastCapacity(restaurantId: String, roundedValue: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val client = OkHttpClient()
+            val url = "http://10.0.2.2:3001/restaurants/$restaurantId/lastCapacity?lastCapacity=$roundedValue"
+            val requestBody = RequestBody.create("application/json".toMediaTypeOrNull(), "")
+
+            val request = Request.Builder()
+                .url(url)
+                .put(requestBody)
+                .build()
+
+            try {
+                val response = client.newCall(request).execute()
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        println("Update successful: ${response.body?.string()}")
+                    } else {
+                        println("Update failed: ${response.code}")
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    println("Exception: ${e.message}")
+                }
+            }
+        }
     }
 
     private fun getRandomImageResId(): Int? {
@@ -231,7 +265,7 @@ class ImageWithDataFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        handler.removeCallbacks(simulationRunnable!!)
+        //handler.removeCallbacks(simulationRunnable!!)
         totalTimer?.cancel()
         intervalTimer?.cancel()
     }
