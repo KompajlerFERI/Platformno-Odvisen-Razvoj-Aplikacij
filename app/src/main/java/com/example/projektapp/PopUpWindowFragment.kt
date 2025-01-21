@@ -23,6 +23,8 @@ class PopUpWindowFragment : DialogFragment() {
     private var _binding: FragmentDialogBinding? = null
     private val binding get() = _binding!!
 
+
+
     private val application: MyApplication
         get() = requireActivity().application as MyApplication
 
@@ -51,16 +53,17 @@ class PopUpWindowFragment : DialogFragment() {
         binding.restaurantName.text = restaurantName
 
         binding.btnCamera.setOnClickListener {
-            // ne dela, če je program zagnan na emulatorju
-
-
             if (openFromImageWithData!!) findNavController().popBackStack()
             findNavController().navigate(R.id.action_restaurantsFragment_to_cameraFragment2)
         }
 
         binding.btnGalery.setOnClickListener {
-
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(intent, REQUEST_CODE)
+            if (openFromImageWithData!!) findNavController().popBackStack()
+            findNavController().navigate(R.id.action_restaurantsFragment_to_cameraFragment2)
         }
+
 
         binding.btnSimulateData.setOnClickListener {
             val randomImageResId = application.getRandomImageResId(requireContext())

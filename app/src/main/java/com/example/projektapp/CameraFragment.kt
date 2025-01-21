@@ -119,7 +119,7 @@ class CameraFragment : Fragment() {
     }
 
     private fun takePhoto() {
-        val imageCapture = this.imageCapture // Use the instance initialized in startCamera
+        val imageCapture = this.imageCapture
         if (!::imageCapture.isInitialized) {
             Log.e("CameraFragment", "ImageCapture is not initialized")
             return
