@@ -6,7 +6,7 @@
     <string name="restaurant_name">Restaurant name</string>
     <string name="meal_price">meal price: %.2f€</string>
     <string name="meal_surcharge">meal surcharge: %.2f€</string>
-    <string name="restaurant_capacity">%d/%d</string>
+    <string name="restaurant_capacity">%s/%d</string>
 
     <string name="restaurant_photo_description">Photo of the restaurant or it\'s food</string>
     <string name="restaurant_capacity_description">Last recorded number of people in restaurant</string>
@@ -18,4 +18,7 @@
     <string name="img">Img</string>
     <string name="price_change">Price change</string>
     <string name="subscribe">Subscribe</string>
+    <string name="detect_capacity">Detect capacity</string>
+    <string name="detect_capacity_description">Detect capacity for %s</string>
+
 </resources>
