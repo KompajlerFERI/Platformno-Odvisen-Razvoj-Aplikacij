@@ -11,6 +11,8 @@
     <string name="restaurant_photo_description">Photo of the restaurant or it\'s food</string>
     <string name="restaurant_capacity_description">Last recorded number of people in restaurant</string>
     <string name="placeholder">PLACEHOLDER</string>
+    <string name="detect_capacity">Detect capacity</string>
+    <string name="detect_capacity_description">Detect capacity for %s</string>
     <string name="camera">Camera</string>
     <string name="simulate_data">Simulate data</string>
     <string name="gallery">Gallery</string>
