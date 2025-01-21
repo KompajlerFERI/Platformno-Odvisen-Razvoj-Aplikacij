@@ -18,7 +18,8 @@
     <dimen name="icon_medium">16dp</dimen>
     <dimen name="icon_large">32dp</dimen>
 
-    <dimen name="card_elevation">6dp</dimen>
+    <dimen name="card_elevation">2dp</dimen>
+    <dimen name="card_corner_radius">8dp</dimen>
 
     <dimen name="popup_width">300dp</dimen>
     <dimen name="popup_height">500dp</dimen>

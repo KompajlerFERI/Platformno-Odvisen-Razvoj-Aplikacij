@@ -20,5 +20,7 @@
     <string name="img">Img</string>
     <string name="price_change">Price change</string>
     <string name="subscribe">Subscribe</string>
+    <string name="restaurant_searchbar_hint">Search for restaurants</string>
+
 
 </resources>
