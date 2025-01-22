@@ -32,20 +32,20 @@ class MyApplication : Application() {
     private val hostname = "fb8c9bba468848348cfa18678ea11f96.s1.eu.hivemq.cloud"
     private val username = "aljosa1-client"
     private val passwordClient = "Admin123"
-    private val clientId = "asd"
+    private val clientId = "client"
     private val mqttClient = MqttAsyncClient("ssl://$hostname:8883", clientId, MemoryPersistence())
 
     private val serverUsername = "aljosa1-server"
     private val passwordServer = "Admin123"
-    private val serverId = "asd"
+    private val serverId = "server"
     private val mqttServer = MqttAsyncClient("ssl://$hostname:8883", serverId, MemoryPersistence())
     private val options = MqttConnectOptions().apply {
         this.userName = username
         this.password = passwordClient.toCharArray()
     }
     private val optionsServer = MqttConnectOptions().apply {
-        this.userName = username
-        this.password = passwordClient.toCharArray()
+        this.userName = serverUsername
+        this.password = passwordServer.toCharArray()
     }
 
     private var contextRef: WeakReference<Context>? = null
