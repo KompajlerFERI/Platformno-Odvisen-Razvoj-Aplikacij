@@ -34,10 +34,20 @@ class MyApplication : Application() {
     private val passwordClient = "Admin123"
     private val clientId = "asd"
     private val mqttClient = MqttAsyncClient("ssl://$hostname:8883", clientId, MemoryPersistence())
+
+    private val serverUsername = "aljosa1-server"
+    private val passwordServer = "Admin123"
+    private val serverId = "asd"
+    private val mqttServer = MqttAsyncClient("ssl://$hostname:8883", serverId, MemoryPersistence())
     private val options = MqttConnectOptions().apply {
         this.userName = username
         this.password = passwordClient.toCharArray()
     }
+    private val optionsServer = MqttConnectOptions().apply {
+        this.userName = username
+        this.password = passwordClient.toCharArray()
+    }
+
     private var contextRef: WeakReference<Context>? = null
 
     override fun onCreate() {
@@ -112,6 +122,21 @@ class MyApplication : Application() {
             e.printStackTrace()
         }
     }
+    fun connectServer() {
+        try {
+            mqttServer.connect(optionsServer).waitForCompletion()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    fun disconnectServer() {
+        try {
+            mqttServer.disconnect()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 
     fun disconnect() {
         try {
@@ -134,7 +159,7 @@ class MyApplication : Application() {
             updateDatabase(restaurantId, price)
             val mqttMessage = MqttMessage(message.toByteArray())
             mqttMessage.qos = 1
-            mqttClient.publish(topic, mqttMessage)
+            mqttServer.publish(topic, mqttMessage)
         } catch (e: Exception) {
             e.printStackTrace()
         }

@@ -64,9 +64,9 @@ class PriceChangeEventFragment : Fragment() {
             val newPrice = newPriceText.toFloatOrNull()
             if (newPriceText.isNotEmpty() && restaurantName != null && restaurantId != null) {
                 val message = "$restaurantName|$newPrice|$restaurantId"
-                application.connect()
+                application.connectServer()
                 application.publish("price", message, restaurantId, newPrice!!)
-                application.disconnect()
+                application.disconnectServer()
             } else {
                 Toast.makeText(requireContext(), "Please enter a price and ensure restaurant details are available", Toast.LENGTH_SHORT).show()
             }
