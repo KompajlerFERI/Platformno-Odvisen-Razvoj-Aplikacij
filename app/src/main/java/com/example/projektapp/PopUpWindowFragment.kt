@@ -56,14 +56,16 @@ class PopUpWindowFragment : DialogFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
-            val imageBitmap = data?.extras?.get("data") as? Bitmap
-            if (imageBitmap != null) {
+            val selectedImageUri = data?.data
+            if (selectedImageUri != null) {
+                // You can fetch the Bitmap from the URI if needed
+                val imageBitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, selectedImageUri)
                 val bundle = Bundle().apply {
                     putParcelable("capturedImage", imageBitmap)
                 }
-                findNavController().navigate(R.id.action_restaurantsFragment_to_dataSimulatorFragment, bundle)
+                findNavController().navigate(R.id.action_restaurantsFragment_to_confirmPhotoFragment, bundle)
             } else {
-                Toast.makeText(context, "Failed to capture image", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Failed to select image", Toast.LENGTH_SHORT).show()
             }
         } else {
             Toast.makeText(context, "Unsuccessful", Toast.LENGTH_SHORT).show()

@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_restaurantsFragment_to_priceChangeEventFragment"
             app:destination="@id/priceChangeEventFragment" />
+        <action
+            android:id="@+id/action_restaurantsFragment_to_confirmPhotoFragment"
+            app:destination="@id/confirmPhotoFragment" />
     </fragment>
 
     <fragment
@@ -63,7 +66,7 @@
         android:label="fragment_confirm_photo"
         tools:layout="@layout/fragment_confirm_photo" >
         <action
-            android:id="@+id/action_confirmPhotoFragment_to_cameraFragment"
-            app:destination="@id/cameraFragment" />
+            android:id="@+id/action_confirmPhotoFragment_to_restaurantsFragment"
+            app:destination="@id/restaurantsFragment" />
     </fragment>
 </navigation>

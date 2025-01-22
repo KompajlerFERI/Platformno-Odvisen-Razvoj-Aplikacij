@@ -44,7 +44,7 @@ class ConfirmPhotoFragment : Fragment() {
         }
 
         binding.btnCancel.setOnClickListener {
-            findNavController().navigate(R.id.action_confirmPhotoFragment_to_cameraFragment)
+            findNavController().navigate(R.id.action_confirmPhotoFragment_to_restaurantsFragment)
         }
     }
 
