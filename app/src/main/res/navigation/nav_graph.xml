@@ -45,9 +45,9 @@
         android:label="PopUpWindowFragment" />
     <fragment
         android:id="@+id/dataSimulatorFragment"
-        android:name="com.example.projektapp.ImageWithDataFragment"
+        android:name="com.example.projektapp.SimulateFragment"
         android:label="fragment_simulate_data"
-        tools:layout="@layout/fragment_image_with_data" >
+        tools:layout="@layout/fragment_simulate" >
         <action
             android:id="@+id/action_dataSimulatorFragment_to_restaurantsFragment"
             app:destination="@id/restaurantsFragment" />
@@ -67,6 +67,18 @@
         tools:layout="@layout/fragment_confirm_photo" >
         <action
             android:id="@+id/action_confirmPhotoFragment_to_restaurantsFragment"
+            app:destination="@id/restaurantsFragment" />
+        <action
+            android:id="@+id/action_confirmPhotoFragment_to_imageWithDataFragment"
+            app:destination="@id/imageWithDataFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/imageWithDataFragment"
+        android:name="com.example.projektapp.ImageWithDataFragment"
+        android:label="fragment_image_with_data"
+        tools:layout="@layout/fragment_image_with_data" >
+        <action
+            android:id="@+id/action_imageWithDataFragment_to_restaurantsFragment"
             app:destination="@id/restaurantsFragment" />
     </fragment>
 </navigation>

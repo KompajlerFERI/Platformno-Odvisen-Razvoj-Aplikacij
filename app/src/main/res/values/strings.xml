@@ -28,6 +28,8 @@
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
     <string name="take_photo">Take Photo</string>
+    <string name="upload_new">New</string>
+    <string name="get_amount_in_image">Get the amount of people in the image</string>
 
 
 </resources>

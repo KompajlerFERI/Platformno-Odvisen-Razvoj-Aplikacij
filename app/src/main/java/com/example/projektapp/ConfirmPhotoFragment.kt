@@ -40,7 +40,7 @@ class ConfirmPhotoFragment : Fragment() {
             val bundle = Bundle().apply {
                 putParcelable("capturedImage", capturedImage)
             }
-            // findNavController().navigate(R.id.action_confirmPhotoFragment_to_dataSimulatorFragment, bundle)
+            findNavController().navigate(R.id.action_confirmPhotoFragment_to_imageWithDataFragment, bundle)
         }
 
         binding.btnCancel.setOnClickListener {
