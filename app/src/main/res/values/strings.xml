@@ -22,7 +22,12 @@
     <string name="img">Img</string>
     <string name="price_change">Price change</string>
     <string name="subscribe">Subscribe</string>
-    <string name="restaurant_searchbar_hint">Search for restaurants</string>
     <string name="unsubscribe">Unsubscribe</string>
+    <string name="restaurant_searchbar_hint">Search for restaurants</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="take_photo">Take Photo</string>
+
 
 </resources>

@@ -37,7 +37,8 @@ class DialogCapacityFragment : Fragment() {
         binding.tvDetectCapacityDescription.text = getString(R.string.detect_capacity_description, restaurantName?.lowercase())
 
         binding.btnCamera.setOnClickListener {
-            // TODO
+            if (openFromImageWithData!!) findNavController().popBackStack()
+            findNavController().navigate(R.id.action_restaurantsFragment_to_cameraFragment)
         }
 
         binding.btnGalery.setOnClickListener {
