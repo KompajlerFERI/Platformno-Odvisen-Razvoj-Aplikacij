@@ -102,22 +102,29 @@ dependencies {
     implementation (libs.shimmer)
 
     // R E T R O F I T
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation(libs.retrofit)
 
     // S C A L A R S   C O N V E R T E R
-    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
+    implementation(libs.converter.scalars)
 
     // O K H T T P -> temporary, menjamo za M Q T T
-    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation(libs.okhttp)
 
     // L O G G I N G   I N T E R C E P T O R
-    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+    implementation(libs.okhttp3.logging.interceptor)
 
     // B O U N C Y   C A S T L E
-    implementation ("org.bouncycastle:bcprov-jdk15to18:1.70")
+    implementation (libs.bcprov.jdk15to18)
 
-    implementation ("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5")
+    implementation (libs.org.eclipse.paho.client.mqttv3)
 
     // D O T S   I N D I C A T O R
-    implementation("com.tbuonomo:dotsindicator:5.1.0")
+    implementation(libs.dotsindicator)
+
+    // C A M E R A
+    implementation(libs.androidx.camera.core)
+    implementation(libs.camera.camera2)
+    implementation(libs.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
+    implementation(libs.androidx.camera.extensions)
 }

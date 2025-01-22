@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_restaurantsFragment_to_priceChangeEventFragment"
             app:destination="@id/priceChangeEventFragment" />
+        <action
+            android:id="@+id/action_restaurantsFragment_to_confirmPhotoFragment"
+            app:destination="@id/confirmPhotoFragment" />
     </fragment>
 
     <fragment
@@ -31,16 +34,20 @@
         android:id="@+id/cameraFragment"
         android:name="com.example.projektapp.CameraFragment"
         android:label="fragment_camera"
-        tools:layout="@layout/fragment_camera" />
+        tools:layout="@layout/fragment_camera" >
+        <action
+            android:id="@+id/action_cameraFragment_to_confirmPhotoFragment"
+            app:destination="@id/confirmPhotoFragment" />
+    </fragment>
     <dialog
         android:id="@+id/popUpWindowFragment"
         android:name="com.example.projektapp.PopUpWindowFragment"
         android:label="PopUpWindowFragment" />
     <fragment
         android:id="@+id/dataSimulatorFragment"
-        android:name="com.example.projektapp.ImageWithDataFragment"
+        android:name="com.example.projektapp.SimulateFragment"
         android:label="fragment_simulate_data"
-        tools:layout="@layout/fragment_image_with_data" >
+        tools:layout="@layout/fragment_simulate" >
         <action
             android:id="@+id/action_dataSimulatorFragment_to_restaurantsFragment"
             app:destination="@id/restaurantsFragment" />
@@ -51,6 +58,27 @@
         android:label="PriceChangeEventFragment" >
         <action
             android:id="@+id/action_priceChangeEventFragment_to_restaurantsFragment"
+            app:destination="@id/restaurantsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/confirmPhotoFragment"
+        android:name="com.example.projektapp.ConfirmPhotoFragment"
+        android:label="fragment_confirm_photo"
+        tools:layout="@layout/fragment_confirm_photo" >
+        <action
+            android:id="@+id/action_confirmPhotoFragment_to_restaurantsFragment"
+            app:destination="@id/restaurantsFragment" />
+        <action
+            android:id="@+id/action_confirmPhotoFragment_to_imageWithDataFragment"
+            app:destination="@id/imageWithDataFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/imageWithDataFragment"
+        android:name="com.example.projektapp.ImageWithDataFragment"
+        android:label="fragment_image_with_data"
+        tools:layout="@layout/fragment_image_with_data" >
+        <action
+            android:id="@+id/action_imageWithDataFragment_to_restaurantsFragment"
             app:destination="@id/restaurantsFragment" />
     </fragment>
 </navigation>
