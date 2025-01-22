@@ -48,5 +48,9 @@
     <fragment
         android:id="@+id/priceChangeEventFragment"
         android:name="com.example.projektapp.PriceChangeEventFragment"
-        android:label="PriceChangeEventFragment" />
+        android:label="PriceChangeEventFragment" >
+        <action
+            android:id="@+id/action_priceChangeEventFragment_to_restaurantsFragment"
+            app:destination="@id/restaurantsFragment" />
+    </fragment>
 </navigation>

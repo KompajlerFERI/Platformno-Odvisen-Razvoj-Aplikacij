@@ -23,6 +23,6 @@
     <string name="price_change">Price change</string>
     <string name="subscribe">Subscribe</string>
     <string name="restaurant_searchbar_hint">Search for restaurants</string>
-
+    <string name="unsubscribe">Unsubscribe</string>
 
 </resources>
