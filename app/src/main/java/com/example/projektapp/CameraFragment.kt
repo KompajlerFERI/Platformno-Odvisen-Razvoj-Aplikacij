@@ -1,5 +1,6 @@
 package com.example.projektapp
 
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Environment
@@ -131,8 +132,15 @@ class CameraFragment : Fragment() {
         imageCapture.takePicture(outputOptions, cameraExecutor, object : ImageCapture.OnImageSavedCallback {
             override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                 requireActivity().runOnUiThread {
-                    val capturedBitmap = BitmapFactory.decodeFile(photoFile.absolutePath)
-                    val bundle = Bundle().apply { putParcelable("capturedImage", capturedBitmap) }
+                    val originalBitmap = BitmapFactory.decodeFile(photoFile.absolutePath)
+                    val adjustedBitmap = if (isUsingFrontCamera) {
+                        rotateBitmap(originalBitmap, 180f) // Rotate by 180 degrees for front camera
+                    } else {
+                        originalBitmap
+                    }
+                    val bundle = Bundle().apply {
+                        putParcelable("capturedImage", adjustedBitmap)
+                    }
                     findNavController().navigate(R.id.action_cameraFragment_to_confirmPhotoFragment, bundle)
                 }
             }
@@ -145,6 +153,12 @@ class CameraFragment : Fragment() {
             }
         })
     }
+
+    private fun rotateBitmap(bitmap: Bitmap, degrees: Float): Bitmap {
+        val matrix = android.graphics.Matrix().apply { postRotate(degrees) }
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+    }
+
 
     private fun createImageFile(): File? {
         return try {
