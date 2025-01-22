@@ -49,6 +49,7 @@ class MyApplication : Application() {
     }
 
     private var contextRef: WeakReference<Context>? = null
+    var subscribed: Boolean = false;
 
     override fun onCreate() {
         super.onCreate()
@@ -141,6 +142,7 @@ class MyApplication : Application() {
     fun disconnect() {
         try {
             mqttClient.disconnect()
+            System.out.println("Disconnected")
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -149,6 +151,13 @@ class MyApplication : Application() {
     fun subscribe(topic: String) {
         try {
             mqttClient.subscribe(topic, 1)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+    fun unsubscribe(topic: String) {
+        try {
+            mqttClient.unsubscribe(topic)
         } catch (e: Exception) {
             e.printStackTrace()
         }

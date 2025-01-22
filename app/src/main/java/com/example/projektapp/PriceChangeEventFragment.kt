@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.example.projektapp.databinding.FragmentEventBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -70,6 +71,10 @@ class PriceChangeEventFragment : Fragment() {
             } else {
                 Toast.makeText(requireContext(), "Please enter a price and ensure restaurant details are available", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        binding.btnBack.setOnClickListener {
+            findNavController().navigate(R.id.action_priceChangeEventFragment_to_restaurantsFragment)
         }
     }
 }

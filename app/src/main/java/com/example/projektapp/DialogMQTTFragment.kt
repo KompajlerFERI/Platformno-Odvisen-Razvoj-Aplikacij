@@ -38,10 +38,26 @@ class DialogMQTTFragment : Fragment() {
             }
             findNavController().navigate(R.id.action_restaurantsFragment_to_priceChangeEventFragment, bundle)
         }
+        if (application.subscribed) {
+            binding.btnSubscribe.setText(R.string.unsubscribe)
+        }
+        else {
+            binding.btnSubscribe.setText(R.string.subscribe)
+        }
 
         binding.btnSubscribe.setOnClickListener {
-            application.connect()
-            application.subscribe("price")
+            if (!application.subscribed) {
+                application.connect()
+                application.subscribe("price")
+                application.subscribed = true
+                binding.btnSubscribe.setText(R.string.unsubscribe)
+            }
+            else {
+                application.unsubscribe("price")
+                application.disconnect()
+                application.subscribed = false
+                binding.btnSubscribe.setText(R.string.subscribe)
+            }
         }
     }
 
