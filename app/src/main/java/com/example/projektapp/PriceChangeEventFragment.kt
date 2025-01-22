@@ -40,6 +40,9 @@ class PriceChangeEventFragment : Fragment() {
         Security.addProvider(BouncyCastleProvider())
     }
 
+    private val application: MyApplication
+        get() = requireActivity().application as MyApplication
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,13 +57,16 @@ class PriceChangeEventFragment : Fragment() {
         val restaurantName = arguments?.getString("restaurantName")
         val restaurantId = arguments?.getString("restaurantId")
 
+        binding.simRestaurantName.text = restaurantName
+
         binding.btnConfirm.setOnClickListener {
-            val newPrice = binding.txtNewPrice.text.toString()
-            if (newPrice.isNotEmpty() && restaurantName != null && restaurantId != null) {
+            val newPriceText = binding.txtNewPrice.text.toString()
+            val newPrice = newPriceText.toFloatOrNull()
+            if (newPriceText.isNotEmpty() && restaurantName != null && restaurantId != null) {
                 val message = "$restaurantName|$newPrice|$restaurantId"
-                MqttClientHandler.connect()
-                MqttClientHandler.publish("price", message)
-                MqttClientHandler.disconnect()
+                application.connect()
+                application.publish("price", message, restaurantId, newPrice!!)
+                application.disconnect()
             } else {
                 Toast.makeText(requireContext(), "Please enter a price and ensure restaurant details are available", Toast.LENGTH_SHORT).show()
             }

@@ -14,6 +14,9 @@ class DialogMQTTFragment : Fragment() {
     private var _binding: FragmentDialogMqttBinding? = null
     private val binding get() = _binding!!
 
+    private val application: MyApplication
+        get() = requireActivity().application as MyApplication
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,8 +40,8 @@ class DialogMQTTFragment : Fragment() {
         }
 
         binding.btnSubscribe.setOnClickListener {
-            MqttClientHandler.connect()
-            MqttClientHandler.subscribe("price")
+            application.connect()
+            application.subscribe("price")
         }
     }
 
