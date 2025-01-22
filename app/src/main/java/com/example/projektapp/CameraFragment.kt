@@ -159,7 +159,6 @@ class CameraFragment : Fragment() {
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
     }
 
-
     private fun createImageFile(): File? {
         return try {
             val photoDirectory = File(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "ProjectApp")
@@ -175,28 +174,35 @@ class CameraFragment : Fragment() {
     private fun toggleFlashMode() {
         when (imageCapture.flashMode) {
             ImageCapture.FLASH_MODE_OFF -> {
+                // Switch to FLASH_MODE_ON
                 imageCapture.flashMode = ImageCapture.FLASH_MODE_ON
                 cameraControl.enableTorch(true)
+                binding.btnFlash.setImageResource(R.drawable.baseline_flash_on_24)
             }
             ImageCapture.FLASH_MODE_ON -> {
+                // Switch to FLASH_MODE_AUTO
                 imageCapture.flashMode = ImageCapture.FLASH_MODE_AUTO
                 cameraControl.enableTorch(false)
+                binding.btnFlash.setImageResource(R.drawable.baseline_flash_auto_24)
             }
             ImageCapture.FLASH_MODE_AUTO -> {
+                // Switch to FLASH_MODE_OFF
                 imageCapture.flashMode = ImageCapture.FLASH_MODE_OFF
                 cameraControl.enableTorch(false)
+                binding.btnFlash.setImageResource(R.drawable.baseline_flash_off_24)
             }
         }
-        Toast.makeText(
-            requireContext(),
-            "Flash mode: ${when (imageCapture.flashMode) {
-                ImageCapture.FLASH_MODE_ON -> "On"
-                ImageCapture.FLASH_MODE_AUTO -> "Auto"
-                else -> "Off"
-            }}",
-            Toast.LENGTH_SHORT
-        ).show()
+        // Toast.makeText(
+        //     requireContext(),
+        //     "Flash mode: ${when (imageCapture.flashMode) {
+        //         ImageCapture.FLASH_MODE_ON -> "On"
+        //         ImageCapture.FLASH_MODE_AUTO -> "Auto"
+        //         else -> "Off"
+        //     }}",
+        //     Toast.LENGTH_SHORT
+        // ).show()
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

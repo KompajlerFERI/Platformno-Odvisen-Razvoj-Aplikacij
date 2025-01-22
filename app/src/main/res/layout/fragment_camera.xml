@@ -28,14 +28,15 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@android:color/transparent"
-            android:src="@drawable/baseline_flash_on_24" />
+            android:src="@drawable/baseline_flash_off_24" />
 
         <ImageButton
             android:id="@+id/btnTakePhoto"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_camera" />
+            android:src="@drawable/baseline_camera_24"
+            android:scaleType="centerInside" />
 
         <ImageButton
             android:id="@+id/btnSwitchCamera"
