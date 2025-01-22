@@ -25,7 +25,7 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "API_URL", "\"http://10.0.2.2:3001/\"")
+            buildConfigField("String", "API_URL", "\"http://13.95.23.193:3001/\"")
         }
         release {
             buildConfigField("String", "API_URL", "\"http://13.95.23.193:3001/\"")

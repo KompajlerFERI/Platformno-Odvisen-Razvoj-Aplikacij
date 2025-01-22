@@ -93,9 +93,10 @@ class ImageWithDataFragment : Fragment() {
             binding.simRestaurantName.text = restaurantName;
         }
 
-
-
         binding.btnBack.setOnClickListener {
+            totalTimer?.cancel()
+            intervalTimer?.cancel()
+            simulationRunnable?.let { handler.removeCallbacks(it) }
             findNavController().navigate(R.id.action_dataSimulatorFragment_to_restaurantsFragment)
         }
 
@@ -214,7 +215,7 @@ class ImageWithDataFragment : Fragment() {
     fun updateLastCapacity(restaurantId: String, roundedValue: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             val client = OkHttpClient()
-            val url = "http://10.0.2.2:3001/restaurants/$restaurantId/lastCapacity?lastCapacity=$roundedValue"
+            val url = "http://13.95.23.193:3001/restaurants/$restaurantId/lastCapacity?lastCapacity=$roundedValue"
             val requestBody = RequestBody.create("application/json".toMediaTypeOrNull(), "")
 
             val request = Request.Builder()
