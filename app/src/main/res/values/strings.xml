@@ -30,6 +30,12 @@
     <string name="take_photo">Take Photo</string>
     <string name="upload_new">New</string>
     <string name="get_amount_in_image">Get the amount of people in the image</string>
+    <string name="simulate">Simulate</string>
+    <string name="data_simulator">Data simulator</string>
+    <string name="timer">Set simulation timer:</string>
+    <string name="interval">Set simulation interval:</string>
+    <string name="minutes">minutes</string>
+    <string name="camera_fragment">CAMERA</string>
 
 
 </resources>
