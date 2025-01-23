@@ -6,38 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".SimulateFragment">
 
-    <TextView
-        android:id="@+id/lblEvent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:text="Enter the new meal price for this restaurant"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btnBack"
-        android:layout_width="110dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="@string/back"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnConfirm"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <Button
         android:id="@+id/btnConfirm"
-        android:layout_width="110dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_marginRight="@dimen/margin_medium"
         android:text="Confirm"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btnBack" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
+
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -61,26 +41,113 @@
 
     <TextView
         android:id="@+id/simRestaurantName"
-        android:layout_width="wrap_content"
+        android:layout_width="290dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_extra_large"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginRight="@dimen/margin_extra_large"
         android:text="@string/placeholder"
         android:textAlignment="center"
         android:textSize="28sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/txtNewPrice"
+    <androidx.cardview.widget.CardView
+        android:layout_width="370dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="40dp"
+        android:paddingTop="16dp"
+        app:cardCornerRadius="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="parent"
+        android:padding="@dimen/margin_medium">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/extremeSwitch"
+                android:layout_width="126dp"
+                android:layout_height="38dp"
+                android:text="Extreme"
+                app:layout_constraintBaseline_toBaselineOf="@+id/textView3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:thumbTint="@color/light_gray_1"
+                app:trackTint="@color/light_gray_2"
+                android:layout_marginRight="@dimen/margin_small"/>
+
+            <TextView
+                android:id="@+id/lblEvent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:text="Price change"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/txtNewPrice"
+                android:layout_width="35dp"
+                android:layout_height="0dp"
+                android:ems="10"
+                android:inputType="numberDecimal"
+                android:padding="7dp"
+                android:textAlignment="viewEnd"
+                android:textSize="14sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/textView3"
+                app:layout_constraintStart_toEndOf="@+id/textView3" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_medium"
+                android:text="New cost:"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lblEvent" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="€"
+                app:layout_constraintBaseline_toBaselineOf="@+id/textView3"
+                app:layout_constraintStart_toEndOf="@+id/txtNewPrice" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:ems="10"
-        android:hint="new price"
-        android:inputType="text"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.33" />
+
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="41dp"
+        android:layout_height="41dp"
+        android:layout_marginVertical="@dimen/margin_small"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/transparent"
+        android:src="@drawable/ic_baseline_arrow_back"
+        app:layout_constraintEnd_toStartOf="@+id/simRestaurantName"
+        app:layout_constraintHorizontal_bias="0.195"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lblEvent" />
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

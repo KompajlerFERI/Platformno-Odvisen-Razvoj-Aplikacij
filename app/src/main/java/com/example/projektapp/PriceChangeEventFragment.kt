@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.example.projektapp.databinding.FragmentEventBinding
 import kotlinx.coroutines.CoroutineScope
@@ -65,11 +66,26 @@ class PriceChangeEventFragment : Fragment() {
             val newPrice = newPriceText.toFloatOrNull()
             if (newPriceText.isNotEmpty() && restaurantName != null && restaurantId != null) {
                 val message = "$restaurantName|$newPrice|$restaurantId"
-                application.connectServer()
-                application.publish("price", message, restaurantId, newPrice!!)
-                application.disconnectServer()
+                if (binding.extremeSwitch.isChecked) {
+                    application.updateDatabase(restaurantId, newPrice!!)
+                    application.connectServer()
+                    application.publish("price", message)
+                    application.disconnectServer()
+                } else {
+                    application.updateDatabase(restaurantId, newPrice!!)
+                }
             } else {
                 Toast.makeText(requireContext(), "Please enter a price and ensure restaurant details are available", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        binding.extremeSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                binding.extremeSwitch.thumbTintList = ContextCompat.getColorStateList(requireContext(), R.color.dark_red)
+                binding.extremeSwitch.trackTintList = ContextCompat.getColorStateList(requireContext(), R.color.light_red)
+            } else {
+                binding.extremeSwitch.thumbTintList = ContextCompat.getColorStateList(requireContext(), R.color.light_gray_1)
+                binding.extremeSwitch.trackTintList = ContextCompat.getColorStateList(requireContext(), R.color.light_gray_2)
             }
         }
 
