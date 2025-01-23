@@ -84,7 +84,7 @@ class MyApplication : Application() {
         })
     }
 
-    private fun updateDatabase(restaurantId: String, price: Float) {
+    fun updateDatabase(restaurantId: String, price: Float) {
         CoroutineScope(Dispatchers.IO).launch {
             val client = OkHttpClient()
             val url = "http://13.95.23.193:3001/restaurants/$restaurantId/mealPrice?mealPrice=$price"
@@ -163,9 +163,8 @@ class MyApplication : Application() {
         }
     }
 
-    fun publish(topic: String, message: String, restaurantId: String, price: Float) {
+    fun publish(topic: String, message: String) {
         try {
-            updateDatabase(restaurantId, price)
             val mqttMessage = MqttMessage(message.toByteArray())
             mqttMessage.qos = 1
             mqttServer.publish(topic, mqttMessage)
