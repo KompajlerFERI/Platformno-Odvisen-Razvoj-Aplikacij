@@ -10,39 +10,38 @@
         android:id="@+id/timerTotal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Total Time: 00:00"
-        app:layout_constraintTop_toBottomOf="@+id/lblPredictedAmount"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:text="@string/timer1"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lblPredictedAmount" />
 
     <TextView
         android:id="@+id/timerInterval"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Interval Time: 00:00"
-        app:layout_constraintTop_toBottomOf="@+id/timerTotal"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/margin_small"
+        android:text="@string/timer2"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timerTotal" />
 
     <TextView
         android:id="@+id/lblPredictedAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="@dimen/margin_large"
         android:text="@string/data_simulator"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/simRestaurantName" />
 
     <ImageButton
         android:id="@+id/btnBack"
         android:layout_width="41dp"
         android:layout_height="41dp"
-        android:layout_marginTop="@dimen/margin_small"
         android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
         android:backgroundTint="@color/transparent"
         android:src="@drawable/ic_baseline_arrow_back"
         app:layout_constraintEnd_toStartOf="@+id/simRestaurantName"
@@ -54,9 +53,9 @@
         android:id="@+id/btnSimulate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:layout_marginLeft="@dimen/margin_medium"
         android:layout_marginRight="@dimen/margin_medium"
+        android:layout_marginBottom="16dp"
         android:text="@string/simulate"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -143,6 +142,9 @@
         android:layout_marginLeft="@dimen/margin_extra_large"
         android:layout_marginTop="@dimen/margin_small"
         android:layout_marginRight="@dimen/margin_extra_large"
+        android:ellipsize="end"
+        android:fontFamily="@font/soliden"
+        android:maxLines="2"
         android:text="@string/placeholder"
         android:textAlignment="center"
         android:textSize="28sp"
