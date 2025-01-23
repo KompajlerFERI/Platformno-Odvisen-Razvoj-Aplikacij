@@ -6,6 +6,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.example.lib.Restaurant
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -238,8 +239,9 @@ class MyApplication : Application() {
         val notification = NotificationCompat.Builder(this, channelId)
             .setContentTitle(title)
             .setContentText(content)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.ic_utensils_notification)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setColor(ContextCompat.getColor(this, R.color.dark_red)) // Set the background color
             .build()
 
         getSystemService(NotificationManager::class.java).notify(2, notification)
