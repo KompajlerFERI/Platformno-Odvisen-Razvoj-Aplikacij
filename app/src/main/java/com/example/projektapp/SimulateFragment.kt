@@ -30,6 +30,7 @@ import kotlin.random.Random
 import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
+import androidx.core.content.ContextCompat
 import com.example.projektapp.databinding.FragmentSimulateBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -82,12 +83,97 @@ class SimulateFragment : Fragment() {
             val timerText = binding.inputSimulationTimer.text.toString()
             val intervalText = binding.inputSimulationInterval.text.toString()
 
-            if (timerText.isNotEmpty() && intervalText.isNotEmpty()) {
-                val timerMillis = timerText.toLong() * 60 * 1000
-                val intervalMillis = intervalText.toLong() * 60 * 1000
+            if (timerText.isNotEmpty() && intervalText.isNotEmpty() && timerText.contains(":") && intervalText.contains(":")) {
+                val timerParts = timerText.split(":")
+                val intervalParts = intervalText.split(":")
+
+                val timerMinutes = timerParts[0].toInt() * 60 + timerParts[1].toInt()
+                val intervalMinutes = intervalParts[0].toInt() * 60 + intervalParts[1].toInt()
+
+                val timerMillis = timerMinutes.toLong() * 60 * 1000
+                val intervalMillis = intervalMinutes.toLong() * 60 * 1000
+
                 startSimulation(timerMillis, intervalMillis)
             } else {
-                Toast.makeText(context, "Please enter valid times", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Please enter valid times in hh:mm format", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        binding.inputSimulationTimer.addTextChangedListener(object : TextWatcher {
+            private var isFormatting: Boolean = false
+            private var isDeleting: Boolean = false
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                isDeleting = count > after
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (isFormatting) return
+
+                val input = s.toString()
+                if (input.length == 2 && !input.contains(":") && !isDeleting) {
+                    isFormatting = true
+                    binding.inputSimulationTimer.setText("$input:")
+                    binding.inputSimulationTimer.setSelection(binding.inputSimulationTimer.text.length)
+                    isFormatting = false
+                } else if (input.length > 5) {
+                    isFormatting = true
+                    binding.inputSimulationTimer.setText(input.substring(0, 5))
+                    binding.inputSimulationTimer.setSelection(5)
+                    isFormatting = false
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+        binding.inputSimulationInterval.addTextChangedListener(object : TextWatcher {
+            private var isFormatting: Boolean = false
+            private var isDeleting: Boolean = false
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                isDeleting = count > after
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (isFormatting) return
+
+                val input = s.toString()
+                if (input.length == 2 && !input.contains(":") && !isDeleting) {
+                    isFormatting = true
+                    binding.inputSimulationInterval.setText("$input:")
+                    binding.inputSimulationInterval.setSelection(binding.inputSimulationInterval.text.length)
+                    isFormatting = false
+                } else if (input.length > 5) {
+                    isFormatting = true
+                    binding.inputSimulationInterval.setText(input.substring(0, 5))
+                    binding.inputSimulationInterval.setSelection(5)
+                    isFormatting = false
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        binding.inputSimulationTimer.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                binding.inputSimulationTimer.setBackgroundResource(R.drawable.border_background_selected)
+                binding.horizontalLineDuration.setBackgroundColor(ContextCompat.getColor(requireContext(),
+                    R.color.dark_red))
+                binding.imageViewDuration.setColorFilter(ContextCompat.getColor(requireContext(),
+                    R.color.dark_red))
+            } else {
+                binding.inputSimulationTimer.setBackgroundResource(R.drawable.border_background)
+                binding.horizontalLineDuration.setBackgroundColor(ContextCompat.getColor(requireContext(),
+                    R.color.black))
+                binding.imageViewDuration.setColorFilter(ContextCompat.getColor(requireContext(),
+                    R.color.black))
+            }
+        }
+        binding.inputSimulationInterval.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                binding.inputSimulationInterval.setBackgroundResource(R.drawable.border_background_selected)
+            } else {
+                binding.inputSimulationInterval.setBackgroundResource(R.drawable.border_background)
             }
         }
     }
